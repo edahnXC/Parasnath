@@ -1,0 +1,16 @@
+# Common ignores for both frontend and backend
+.DS_Store
+.idea
+.vscode
+*.log
+*.swp
+*.swo
+Thumbs.db
+
+# Environment files (both)
+.env
+.env.*
+!.env.example
+
+# Dependency directories
+**/node_modules/

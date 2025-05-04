@@ -1,0 +1,101 @@
+// Variables
+$primary-color: #4a6b2a;
+$secondary-color: #6a8a4a;
+$text-color: #2c3e50;
+$shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+.temple-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: $shadow;
+  transition: all 0.4s ease;
+  height: 100%;
+  animation: fadeInUp 0.6s ease-out forwards;
+  opacity: 0;
+  transform: translateY(20px);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .temple-image {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.5s ease;
+    background-color: #f5f5f5; // Fallback color
+  }
+
+  &:hover .temple-image {
+    transform: scale(1.05);
+  }
+
+  .temple-info {
+    padding: 1.5rem;
+
+    h3 {
+      margin-bottom: 0.5rem;
+      color: $primary-color;
+      font-size: 1.3rem;
+    }
+
+    .location {
+      color: $secondary-color;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      
+      &::before {
+        content: '📍';
+        margin-right: 5px;
+      }
+    }
+
+    .description {
+      margin-bottom: 1.5rem;
+      color: lighten($text-color, 15%);
+      line-height: 1.5;
+    }
+
+    .learn-more {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      text-align: center;
+      width: 100%;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+        transform: translateY(-2px);
+      }
+    }
+  }
+
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{0.1 * $i}s;
+    }
+  }
+}
+
+// Responsive styles
+@media (max-width: 480px) {
+  .temple-card {
+    .temple-info {
+      padding: 1.2rem;
+      
+      h3 {
+        font-size: 1.2rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,149 @@
+// Variables
+$primary-color: #4a6b2a;
+$secondary-color: #6a8a4a;
+$text-color: #2c3e50;
+$light-color: #f8f9fa;
+$shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+// Base styles
+.temples-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  min-height: 80vh;
+
+  .temples-header {
+    text-align: center;
+    margin-bottom: 3rem;
+
+    h1 {
+      color: $text-color;
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      animation: fadeInUp 0.8s ease-out forwards;
+    }
+
+    .subtitle {
+      color: lighten($text-color, 20%);
+      font-size: 1.2rem;
+      animation: fadeInUp 0.8s ease-out 0.2s forwards;
+      opacity: 0;
+    }
+  }
+
+  .loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+
+    .spinner {
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid $primary-color;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      color: lighten($text-color, 20%);
+      font-size: 1.1rem;
+    }
+  }
+
+  .error-message {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f8d7da;
+    border-radius: 8px;
+    color: #721c24;
+    animation: fadeIn 0.6s ease-out forwards;
+
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+
+      &:hover {
+        background-color: darken($primary-color, 10%);
+      }
+    }
+  }
+
+  .temples-container {
+    .temples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .temples-info {
+      background-color: $light-color;
+      padding: 2rem;
+      border-radius: 8px;
+      margin-top: 2rem;
+      animation: fadeInUp 0.8s ease-out 0.3s forwards;
+      opacity: 0;
+
+      h2 {
+        color: $text-color;
+        margin-bottom: 1rem;
+      }
+
+      p {
+        color: lighten($text-color, 10%);
+        line-height: 1.6;
+      }
+    }
+  }
+}
+
+// Keyframes
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .temples-page {
+    padding: 1.5rem 1rem;
+
+    .temples-header {
+      h1 {
+        font-size: 2rem;
+      }
+    }
+
+    .temples-container {
+      .temples-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  }
+}

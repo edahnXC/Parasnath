@@ -1,0 +1,54 @@
+.trekking-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem 2rem 1.5rem;
+  
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 2rem;
+    }
+  
+    .trekking-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+  
+      .routes-list {
+        flex: 1;
+        min-width: 250px;
+  
+        .route-item {
+          padding: 1rem;
+          margin-bottom: 1rem;
+          background: white;
+          border-radius: 4px;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+          cursor: pointer;
+          transition: all 0.3s;
+  
+          &:hover {
+            background: #f8f9fa;
+          }
+  
+          &.active {
+            background: #3498db;
+            color: white;
+          }
+        }
+      }
+  
+      .route-details {
+        flex: 2;
+        min-width: 300px;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .trekking-page {
+      .trekking-content {
+        flex-direction: column;
+      }
+    }
+  }

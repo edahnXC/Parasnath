@@ -15,8 +15,8 @@
     "test": "cd frontend && npm test && cd ../backend && npm test"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
+    "node": "18.x",
+    "npm": "9.x"
   },
   "dependencies": {
     "concurrently": "^8.2.2"

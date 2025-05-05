@@ -51,12 +51,13 @@ const FloraFauna = () => {
   }, []);
 
   return (
-    <div className="flora-fauna-page">
-      <HeroSection 
-        title="Parasnath Wildlife Sanctuary" 
-        subtitle="Biodiversity Hotspot of Jharkhand"
-        imagePath="/images/mountain.jpeg"
-      />
+    <div className="flora-fauna-page" style={{ width: '100%', maxWidth: '100%', padding: 0 }}>
+  <HeroSection 
+    title="Parasnath Wildlife Sanctuary" 
+    subtitle="Biodiversity Hotspot of Jharkhand"
+    imagePath="/images/mountain.jpeg"
+    fullWidth={true}  // Add this prop
+  />
       
       <section className="intro-section reveal">
         <h2 className="title-animate"><FaMountain className="icon pulse" /> Sanctuary Overview</h2>

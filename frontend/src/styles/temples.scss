@@ -4,6 +4,7 @@ $secondary-color: #6a8a4a;
 $text-color: #2c3e50;
 $light-color: #f8f9fa;
 $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$transition: all 0.3s ease;
 
 // Base styles
 .temples-page {
@@ -15,6 +16,7 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   .temples-header {
     text-align: center;
     margin-bottom: 3rem;
+    position: relative;
 
     h1 {
       color: $text-color;
@@ -28,6 +30,92 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       font-size: 1.2rem;
       animation: fadeInUp 0.8s ease-out 0.2s forwards;
       opacity: 0;
+      margin-bottom: 2rem;
+    }
+
+    .search-filter-container {
+      max-width: 800px;
+      margin: 0 auto;
+      animation: fadeIn 0.8s ease-out 0.4s forwards;
+      opacity: 0;
+    }
+
+    .search-box {
+      position: relative;
+      margin: 1rem auto 1.5rem;
+      max-width: 500px;
+
+      .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: lighten($text-color, 30%);
+      }
+
+      input {
+        width: 100%;
+        padding: 0.8rem 1rem 0.8rem 2.5rem;
+        border: 2px solid lighten($primary-color, 40%);
+        border-radius: 30px;
+        font-size: 1rem;
+        transition: $transition;
+        box-shadow: $shadow;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba($primary-color, 0.2);
+        }
+      }
+
+      .clear-search {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: lighten($text-color, 30%);
+        cursor: pointer;
+        transition: $transition;
+
+        &:hover {
+          color: $primary-color;
+          transform: translateY(-50%) scale(1.1);
+        }
+      }
+    }
+
+    .filter-tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+
+      .tag-btn {
+        padding: 0.5rem 1rem;
+        background: lighten($primary-color, 50%);
+        border: none;
+        border-radius: 20px;
+        color: $primary-color;
+        font-weight: 500;
+        cursor: pointer;
+        transition: $transition;
+        box-shadow: $shadow;
+
+        &:hover {
+          background: lighten($primary-color, 40%);
+          transform: translateY(-2px);
+        }
+
+        &.active {
+          background: $primary-color;
+          color: white;
+          transform: translateY(-2px);
+        }
+      }
     }
   }
 
@@ -70,15 +158,46 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       border: none;
       border-radius: 4px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      transition: $transition;
 
       &:hover {
         background-color: darken($primary-color, 10%);
+        transform: translateY(-2px);
       }
     }
   }
 
   .temples-container {
+    .no-results {
+      text-align: center;
+      padding: 3rem;
+      background: $light-color;
+      border-radius: 8px;
+      animation: fadeIn 0.6s ease-out;
+
+      h3 {
+        color: $text-color;
+        margin-bottom: 1.5rem;
+      }
+
+      .reset-filters {
+        padding: 0.7rem 1.5rem;
+        background: $primary-color;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: $transition;
+        box-shadow: $shadow;
+
+        &:hover {
+          background: darken($primary-color, 10%);
+          transform: translateY(-2px);
+        }
+      }
+    }
+
     .temples-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -93,6 +212,7 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       margin-top: 2rem;
       animation: fadeInUp 0.8s ease-out 0.3s forwards;
       opacity: 0;
+      transition: $transition;
 
       h2 {
         color: $text-color;
@@ -137,6 +257,19 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     .temples-header {
       h1 {
         font-size: 2rem;
+      }
+
+      .search-box {
+        margin: 1rem auto;
+      }
+
+      .filter-tags {
+        gap: 0.3rem;
+        
+        .tag-btn {
+          padding: 0.4rem 0.8rem;
+          font-size: 0.9rem;
+        }
       }
     }
 

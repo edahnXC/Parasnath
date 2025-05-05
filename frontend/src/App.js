@@ -12,14 +12,13 @@ import { useAllAnimations } from './hooks/useAnimations';
 import './styles/main.scss';
 
 function App() {
-  // Initialize all animations
   useAllAnimations();
 
   return (
     <Router>
       <div className="app">
         <Header />
-        <main>
+        <main className="main-content">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/temples" element={<Temples />} />

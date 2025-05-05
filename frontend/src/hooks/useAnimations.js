@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-// Helper function that can be called outside of React lifecycle
 const animateOnScroll = () => {
   const elements = document.querySelectorAll('.reveal');
   
@@ -12,7 +11,8 @@ const animateOnScroll = () => {
       }
     });
   }, {
-    threshold: 0.1
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
   });
 
   elements.forEach(element => {
@@ -38,13 +38,17 @@ export const usePageLoadAnimation = () => {
     const sections = document.querySelectorAll('section, .page');
     sections.forEach((section, index) => {
       setTimeout(() => {
+        section.style.transition = `opacity 0.6s ease-out ${index * 0.1}s, transform 0.6s ease-out ${index * 0.1}s`;
         section.classList.add('loaded');
-      }, index * 200);
+      }, 50);
     });
 
     return () => {
       document.body.classList.remove('loaded');
-      sections.forEach(section => section.classList.remove('loaded'));
+      sections.forEach(section => {
+        section.style.transition = '';
+        section.classList.remove('loaded');
+      });
     };
   }, []);
 };
@@ -72,11 +76,14 @@ export const useBackToTop = () => {
     });
     
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Initialize
     
     return () => {
       backToTop.removeEventListener('click', () => {});
       window.removeEventListener('scroll', handleScroll);
-      backToTop.remove();
+      if (backToTop.parentNode) {
+        backToTop.parentNode.removeChild(backToTop);
+      }
     };
   }, []);
 };
@@ -84,8 +91,9 @@ export const useBackToTop = () => {
 export const useRouteAnimations = () => {
   useEffect(() => {
     const handleRouteChange = () => {
-      // Use the helper function directly instead of the hook
-      setTimeout(animateOnScroll, 300);
+      setTimeout(() => {
+        animateOnScroll();
+      }, 300);
     };
 
     // Store original pushState

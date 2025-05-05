@@ -23,13 +23,21 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
-    alert('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', message: '' });
     
-    // Add submission animation
+    // Add form submission animation
     const form = e.target;
-    form.classList.add('form-submitted');
-    setTimeout(() => form.classList.remove('form-submitted'), 1000);
+    form.classList.add('form-submitting');
+    
+    setTimeout(() => {
+      form.classList.remove('form-submitting');
+      form.classList.add('form-submitted');
+      alert('Thank you for your message! We will get back to you soon.');
+      setFormData({ name: '', email: '', message: '' });
+      
+      setTimeout(() => {
+        form.classList.remove('form-submitted');
+      }, 2000);
+    }, 1000);
   };
 
   return (
@@ -37,7 +45,8 @@ const Contact = () => {
       <HeroSection 
         title="Contact Us" 
         subtitle="Get in touch for more information"
-        imagePath="/images/temple 2.jpeg"
+        imagePath="/images/mountain.jpeg"
+        fullWidth
       />
       
       <div className="contact-container">

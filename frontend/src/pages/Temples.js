@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAllAnimations } from '../hooks/useAnimations';
 import TempleDetails from '../components/TempleDetails';
 import TempleCard from '../components/TempleCard';
+import { FaSearch, FaTimes } from 'react-icons/fa';
 import '../styles/temples.scss';
 
 const mockTemples = [
@@ -15,7 +16,8 @@ const mockTemples = [
     architecture: 'Traditional Jain temple architecture with marble carvings, domes, and intricate designs.',
     bestTimeToVisit: 'October to March',
     facilities: 'Accommodation, food, guided tours',
-    shortDescription: 'The most sacred Jain pilgrimage site with 20 Tirthankaras attaining moksha here'
+    shortDescription: 'The most sacred Jain pilgrimage site with 20 Tirthankaras attaining moksha here',
+    tags: ['main', 'sacred', 'viewpoint']
   },
   {
     _id: '2',
@@ -27,7 +29,8 @@ const mockTemples = [
     architecture: 'Stone construction with traditional carvings, smaller in size compared to main temples.',
     bestTimeToVisit: 'Year-round, but especially during Jain festivals',
     facilities: 'Basic amenities',
-    shortDescription: 'Ancient temple dedicated to Bhomia Baba with unique stone carvings'
+    shortDescription: 'Ancient temple dedicated to Bhomia Baba with unique stone carvings',
+    tags: ['ancient', 'peaceful', 'carvings']
   },
   {
     _id: '3',
@@ -39,7 +42,8 @@ const mockTemples = [
     architecture: 'Combination of marble and stone with detailed fresco work.',
     bestTimeToVisit: 'Monsoon and winter seasons',
     facilities: 'Rest areas, drinking water',
-    shortDescription: 'Picturesque temple near a natural spring with beautiful frescoes'
+    shortDescription: 'Picturesque temple near a natural spring with beautiful frescoes',
+    tags: ['nature', 'spring', 'frescoes']
   }
 ];
 
@@ -48,12 +52,15 @@ const Temples = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedTemple, setSelectedTemple] = useState(null);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [activeFilter, setActiveFilter] = useState('all');
     
     useAllAnimations();
   
     useEffect(() => {
       const fetchTemples = async () => {
         try {
+          // Simulate API call with delay
           await new Promise(resolve => setTimeout(resolve, 800));
           setTemples(mockTemples);
           setLoading(false);
@@ -66,6 +73,19 @@ const Temples = () => {
   
       fetchTemples();
     }, []);
+
+    const filteredTemples = temples.filter(temple => {
+      const matchesSearch = temple.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                          temple.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          temple.shortDescription.toLowerCase().includes(searchTerm.toLowerCase());
+      
+      const matchesFilter = activeFilter === 'all' || 
+                           (temple.tags && temple.tags.includes(activeFilter));
+      
+      return matchesSearch && matchesFilter;
+    });
+
+    const uniqueTags = ['all', ...new Set(temples.flatMap(temple => temple.tags || []))];
   
     const handleLearnMore = (temple) => {
       setSelectedTemple(temple);
@@ -75,12 +95,46 @@ const Temples = () => {
     const handleCloseDetails = () => {
       setSelectedTemple(null);
     };
+
+    const clearSearch = () => {
+      setSearchTerm('');
+    };
   
     return (
       <div className="temples-page">
         <header className="temples-header reveal">
           <h1>Jain Temples of Parasnath</h1>
           <p className="subtitle">Sacred pilgrimage sites on Parasnath Hill</p>
+          
+          {/* Search and Filter Section */}
+          <div className="search-filter-container">
+            <div className="search-box">
+              <FaSearch className="search-icon" />
+              <input
+                type="text"
+                placeholder="Search temples..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              {searchTerm && (
+                <button className="clear-search" onClick={clearSearch}>
+                  <FaTimes />
+                </button>
+              )}
+            </div>
+            
+            <div className="filter-tags">
+              {uniqueTags.map(tag => (
+                <button
+                  key={tag}
+                  className={`tag-btn ${activeFilter === tag ? 'active' : ''}`}
+                  onClick={() => setActiveFilter(tag)}
+                >
+                  {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
         </header>
         
         {selectedTemple ? (
@@ -102,25 +156,42 @@ const Temples = () => {
               </div>
             ) : (
               <div className="temples-container">
-                <div className="temples-grid">
-                  {temples.map((temple, index) => (
-                    <TempleCard 
-                      key={temple._id} 
-                      temple={temple} 
-                      className="reveal"
-                      style={{ transitionDelay: `${index * 0.1}s` }}
-                      onLearnMore={() => handleLearnMore(temple)}
-                    />
-                  ))}
-                </div>
-                <div className="temples-info reveal">
-                  <h2>About Parasnath Temples</h2>
-                  <p>
-                    The temples on Parasnath Hill are among the most sacred sites in Jainism. 
-                    The hill is named after Parshvanatha, the 23rd Tirthankara, and is believed 
-                    to be the place where 20 of the 24 Tirthankaras attained moksha (liberation).
-                  </p>
-                </div>
+                {filteredTemples.length > 0 ? (
+                  <>
+                    <div className="temples-grid">
+                      {filteredTemples.map((temple, index) => (
+                        <TempleCard 
+                          key={temple._id} 
+                          temple={temple} 
+                          className="reveal"
+                          style={{ transitionDelay: `${index * 0.1}s` }}
+                          onLearnMore={() => handleLearnMore(temple)}
+                        />
+                      ))}
+                    </div>
+                    <div className="temples-info reveal">
+                      <h2>About Parasnath Temples</h2>
+                      <p>
+                        The temples on Parasnath Hill are among the most sacred sites in Jainism. 
+                        The hill is named after Parshvanatha, the 23rd Tirthankara, and is believed 
+                        to be the place where 20 of the 24 Tirthankaras attained moksha (liberation).
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <div className="no-results reveal">
+                    <h3>No temples found matching your search</h3>
+                    <button 
+                      className="reset-filters"
+                      onClick={() => {
+                        setSearchTerm('');
+                        setActiveFilter('all');
+                      }}
+                    >
+                      Reset Filters
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </>

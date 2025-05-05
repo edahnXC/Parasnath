@@ -8,39 +8,39 @@ const Gallery = () => {
   
   // Images for the hero slideshow
   const heroImages = [
-    '/images/temple 1.jpeg',
-    '/images/temple 2.jpeg',
-    '/images/temple 3.jpeg',
-    '/images/temple 4.jpeg',
-    '/images/temple front.jpeg',
-    '/images/temple below.jpeg',
-    '/images/mountain.jpeg'
+    process.env.PUBLIC_URL + '/images/temple 1.jpeg',
+    process.env.PUBLIC_URL + '/images/temple 2.jpeg',
+    process.env.PUBLIC_URL + '/images/temple 3.jpeg',
+    process.env.PUBLIC_URL + '/images/temple 4.jpeg',
+    process.env.PUBLIC_URL + '/images/temple front.jpeg',
+    process.env.PUBLIC_URL + '/images/temple below.jpeg',
+    process.env.PUBLIC_URL + '/images/mountain.jpeg'
   ];
 
   const [currentHeroImage, setCurrentHeroImage] = useState(0);
 
   // Gallery items
   const galleryItems = [
-    { id: 1, category: 'mountain', src: '/images/mountain.jpeg', alt: 'Parasnath Mountain View' },
-    { id: 2, category: 'rocks', src: '/images/rocks.jpeg', alt: 'Rock formations' },
-    { id: 3, category: 'temples', src: '/images/temple 1.jpeg', alt: 'Temple 1' },
-    { id: 4, category: 'temples', src: '/images/temple 2.jpeg', alt: 'Temple 2' },
-    { id: 5, category: 'temples', src: '/images/temple 3.jpeg', alt: 'Temple 3' },
-    { id: 6, category: 'temples', src: '/images/temple 4.jpeg', alt: 'Temple 4' },
-    { id: 7, category: 'temples', src: '/images/temple below.jpeg', alt: 'Temple from below' },
-    { id: 8, category: 'temples', src: '/images/temple front.jpeg', alt: 'Temple front view' },
-    { id: 9, category: 'waterfall', src: '/images/ursi fall.jpeg', alt: 'Ursi Waterfall' },
+    { id: 1, category: 'mountain', src: process.env.PUBLIC_URL + '/images/mountain.jpeg', alt: 'Parasnath Mountain View' },
+    { id: 2, category: 'rocks', src: process.env.PUBLIC_URL + '/images/rocks.jpeg', alt: 'Rock formations' },
+    { id: 3, category: 'temples', src: process.env.PUBLIC_URL + '/images/temple 1.jpeg', alt: 'Temple 1' },
+    { id: 4, category: 'temples', src: process.env.PUBLIC_URL + '/images/temple 2.jpeg', alt: 'Temple 2' },
+    { id: 5, category: 'temples', src: process.env.PUBLIC_URL + '/images/temple 3.jpeg', alt: 'Temple 3' },
+    { id: 6, category: 'temples', src: process.env.PUBLIC_URL + '/images/temple 4.jpeg', alt: 'Temple 4' },
+    { id: 7, category: 'temples', src: process.env.PUBLIC_URL + '/images/temple below.jpeg', alt: 'Temple from below' },
+    { id: 8, category: 'temples', src: process.env.PUBLIC_URL + '/images/temple front.jpeg', alt: 'Temple front view' },
+    { id: 9, category: 'waterfall', src: process.env.PUBLIC_URL + '/images/ursi fall.jpeg', alt: 'Ursi Waterfall' },
     { 
       id: 10, 
       category: 'videos', 
-      src: '/images/view.mp4', 
+      src: process.env.PUBLIC_URL + '/images/view.mp4', 
       alt: 'Panoramic view video',
       type: 'video'
     },
     { 
       id: 11, 
       category: 'videos', 
-      src: '/images/sunrise.mp4', 
+      src: process.env.PUBLIC_URL + '/images/sunrise.mp4', 
       alt: 'Sunrise time-lapse',
       type: 'video'
     }
@@ -66,7 +66,12 @@ const Gallery = () => {
           <div 
             key={index}
             className={`hero-slide ${index === currentHeroImage ? 'active' : ''}`}
-            style={{ backgroundImage: `url(${image})` }}
+            style={{ 
+              backgroundImage: `url(${image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
           >
             <div className="hero-overlay"></div>
             <div className="hero-content">

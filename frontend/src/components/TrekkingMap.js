@@ -1,3 +1,4 @@
+// src/components/TrekkingMap.js
 import React, { useEffect, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import '../styles/trekkingMap.scss';
@@ -14,31 +15,31 @@ const TrekkingMap = ({ route }) => {
         const loader = new Loader({
           apiKey,
           version: "weekly",
-          libraries: ["marker"],
+          libraries: ["geometry"],
         });
 
-        const { Map } = await loader.importLibrary('maps');
-        const { AdvancedMarkerElement } = await loader.importLibrary('marker');
-        const { Polyline } = await loader.importLibrary('geometry');
+        await loader.load();
 
-        const map = new Map(mapRef.current, {
+        const map = new window.google.maps.Map(mapRef.current, {
           center: route.waypoints[0].coordinates,
           zoom: 14,
-          mapId: 'TERRAIN_MAP',
+          mapTypeId: 'terrain',
         });
 
-        // Create polyline
-        new Polyline({
-          path: route.waypoints.map(wp => wp.coordinates),
+        // Create polyline path
+        const path = route.waypoints.map(wp => wp.coordinates);
+
+        new window.google.maps.Polyline({
+          path,
           map,
           strokeColor: '#4a6b2a',
           strokeOpacity: 1.0,
           strokeWeight: 4,
         });
 
-        // Add advanced markers
+        // Add markers
         route.waypoints.forEach(wp => {
-          new AdvancedMarkerElement({
+          new window.google.maps.Marker({
             position: wp.coordinates,
             map,
             title: wp.name,

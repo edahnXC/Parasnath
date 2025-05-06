@@ -95,10 +95,11 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
 // Gallery Content
 .gallery-page {
-  max-width: 1200px;
-  margin: 3rem auto;
-  padding: 0 1.5rem;
+  width: 100%;
+  margin: 3rem 0;
+  padding: 0 2rem;
   overflow-x: hidden;
+}
 
   .gallery-controls {
     display: flex;
@@ -213,7 +214,7 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       }
     }
   }
-}
+
 
 // Animation classes
 .pulse-on-hover {

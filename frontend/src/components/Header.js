@@ -1,8 +1,39 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/header.scss';
 
 const Header = () => {
+  const scriptRef = useRef(null);
+
+  useEffect(() => {
+    // Only load the Google Translate script if it hasn't been added yet
+    if (!window.google || !window.google.translate) {
+      const script = document.createElement('script');
+      script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      script.async = true;
+      document.body.appendChild(script);
+
+      scriptRef.current = script; // Store reference to the script
+
+      window.googleTranslateElementInit = () => {
+        new window.google.translate.TranslateElement({
+          pageLanguage: 'en',
+          includedLanguages: 'en,hi,es,fr,de,it,ja,ko,zh-CN,ru,ar,pt,gu,mr', // Added Gujarati and Marathi
+          layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
+          autoDisplay: false, // Prevent auto-display
+        }, 'google_translate_element');
+      };
+    }
+
+    // Cleanup: Remove the script when the component unmounts
+    return () => {
+      if (scriptRef.current) {
+        document.body.removeChild(scriptRef.current);
+        scriptRef.current = null; // Clear the reference
+      }
+    };
+  }, []); // Empty dependency array to run once when the component mounts
+
   return (
     <header className="header">
       <div className="logo">
@@ -18,6 +49,9 @@ const Header = () => {
           <li><Link to="/contact">Contact</Link></li>
         </ul>
       </nav>
+
+      {/* Google Translate Widget */}
+      <div id="google_translate_element" className="google-translate-widget"></div>
     </header>
   );
 };

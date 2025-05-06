@@ -10,7 +10,7 @@ const Footer = () => {
           <h3>About Parasnath</h3>
           <p>Parasnath Hill is the highest mountain in Jharkhand and an important Jain pilgrimage site.</p>
         </div>
-        
+
         <div className="footer-section">
           <h3>Quick Links</h3>
           <ul>
@@ -20,14 +20,14 @@ const Footer = () => {
             <li><Link to="/contact">Contact</Link></li>
           </ul>
         </div>
-        
+
         <div className="footer-section">
           <h3>Contact Info</h3>
           <p>Email: info@parasnath.com</p>
           <p>Phone: +91 XXXXXXXXXX</p>
         </div>
       </div>
-      
+
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} Parasnath Tourism. All rights reserved.</p>
       </div>

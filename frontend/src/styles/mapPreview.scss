@@ -1,47 +1,61 @@
 .map-preview {
-    max-width: 1200px;
-    margin: 3rem auto;
-    padding: 0 1.5rem;
-  
-    h2 {
-      text-align: center;
-      color: #2c3e50;
-      margin-bottom: 1.5rem;
-      position: relative;
-  
-      &::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100px;
-        height: 3px;
-        background-color: #e74c3c;
-      }
-    }
-  
-    .map-container {
-      height: 400px;
-      width: 100%;
-      border-radius: 8px;
-      overflow: hidden;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      border: 1px solid #ecf0f1;
-    }
-  
-    .map-legend {
-      text-align: center;
-      margin-top: 1rem;
-      color: #7f8c8d;
-      font-style: italic;
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 1.5rem;
+
+  h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100px;
+      height: 3px;
+      background-color: #e74c3c;
     }
   }
-  
-  @media (max-width: 768px) {
-    .map-preview {
-      .map-container {
-        height: 300px;
-      }
+
+  .map-container {
+    height: 400px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ecf0f1;
+    background-color: #f5f5f5; // Fallback background
+  }
+
+  .map-legend {
+    text-align: center;
+    margin-top: 1rem;
+    color: #7f8c8d;
+    font-style: italic;
+  }
+
+  .map-error {
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 8px;
+    color: #721c24;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .map-preview {
+    .map-container,
+    .map-error {
+      height: 300px;
     }
   }
+}

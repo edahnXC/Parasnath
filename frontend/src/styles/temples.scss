@@ -12,6 +12,7 @@ $transition: all 0.3s ease;
   margin: 0 auto;
   padding: 2rem 1.5rem;
   min-height: 80vh;
+  box-sizing: border-box; // Add this to prevent overflow
 
   .temples-header {
     text-align: center;
@@ -20,17 +21,19 @@ $transition: all 0.3s ease;
 
     h1 {
       color: $text-color;
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 5vw, 2.5rem); // Responsive font size
       margin-bottom: 0.5rem;
       animation: fadeInUp 0.8s ease-out forwards;
+      word-wrap: break-word; // Prevent text overflow
     }
 
     .subtitle {
       color: lighten($text-color, 20%);
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 3vw, 1.2rem); // Responsive font size
       animation: fadeInUp 0.8s ease-out 0.2s forwards;
       opacity: 0;
       margin-bottom: 2rem;
+      padding: 0 1rem; // Add padding to prevent text touching edges
     }
 
     .search-filter-container {
@@ -38,12 +41,16 @@ $transition: all 0.3s ease;
       margin: 0 auto;
       animation: fadeIn 0.8s ease-out 0.4s forwards;
       opacity: 0;
+      width: 100%;
+      padding: 0 1rem; // Add padding
+      box-sizing: border-box;
     }
 
     .search-box {
       position: relative;
       margin: 1rem auto 1.5rem;
       max-width: 500px;
+      width: 100%;
 
       .search-icon {
         position: absolute;
@@ -61,6 +68,7 @@ $transition: all 0.3s ease;
         font-size: 1rem;
         transition: $transition;
         box-shadow: $shadow;
+        box-sizing: border-box; // Important for mobile
 
         &:focus {
           outline: none;
@@ -79,6 +87,7 @@ $transition: all 0.3s ease;
         color: lighten($text-color, 30%);
         cursor: pointer;
         transition: $transition;
+        padding: 0.5rem; // Add padding for better touch target
 
         &:hover {
           color: $primary-color;
@@ -93,6 +102,7 @@ $transition: all 0.3s ease;
       justify-content: center;
       gap: 0.5rem;
       margin-top: 1rem;
+      padding: 0 0.5rem; // Add padding
 
       .tag-btn {
         padding: 0.5rem 1rem;
@@ -104,6 +114,7 @@ $transition: all 0.3s ease;
         cursor: pointer;
         transition: $transition;
         box-shadow: $shadow;
+        font-size: clamp(0.8rem, 3vw, 1rem); // Responsive font size
 
         &:hover {
           background: lighten($primary-color, 40%);
@@ -149,6 +160,7 @@ $transition: all 0.3s ease;
     border-radius: 8px;
     color: #721c24;
     animation: fadeIn 0.6s ease-out forwards;
+    margin: 0 1rem; // Add margin for mobile
 
     button {
       margin-top: 1rem;
@@ -159,6 +171,7 @@ $transition: all 0.3s ease;
       border-radius: 4px;
       cursor: pointer;
       transition: $transition;
+      min-width: 120px; // Ensure button doesn't get too small
 
       &:hover {
         background-color: darken($primary-color, 10%);
@@ -174,10 +187,12 @@ $transition: all 0.3s ease;
       background: $light-color;
       border-radius: 8px;
       animation: fadeIn 0.6s ease-out;
+      margin: 0 1rem; // Add margin for mobile
 
       h3 {
         color: $text-color;
         margin-bottom: 1.5rem;
+        font-size: clamp(1.2rem, 4vw, 1.5rem); // Responsive font size
       }
 
       .reset-filters {
@@ -190,6 +205,7 @@ $transition: all 0.3s ease;
         cursor: pointer;
         transition: $transition;
         box-shadow: $shadow;
+        min-width: 160px; // Ensure button doesn't get too small
 
         &:hover {
           background: darken($primary-color, 10%);
@@ -200,9 +216,10 @@ $transition: all 0.3s ease;
 
     .temples-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
       gap: 2rem;
       margin-bottom: 3rem;
+      padding: 0 1rem; // Add padding
     }
 
     .temples-info {
@@ -213,15 +230,18 @@ $transition: all 0.3s ease;
       animation: fadeInUp 0.8s ease-out 0.3s forwards;
       opacity: 0;
       transition: $transition;
+      margin: 2rem 1rem 0; // Add horizontal margin
 
       h2 {
         color: $text-color;
         margin-bottom: 1rem;
+        font-size: clamp(1.3rem, 4vw, 1.8rem); // Responsive font size
       }
 
       p {
         color: lighten($text-color, 10%);
         line-height: 1.6;
+        font-size: clamp(0.9rem, 3vw, 1rem); // Responsive font size
       }
     }
   }
@@ -287,7 +307,7 @@ $transition: all 0.3s ease;
 
 @media (max-width: 480px) {
   .temples-page {
-    padding: 1rem;
+    padding: 1rem 0.5rem; // Adjusted padding for small devices
 
     .temples-header {
       h1 {
@@ -310,6 +330,30 @@ $transition: all 0.3s ease;
       .temples-grid {
         gap: 1.5rem;
       }
+    }
+  }
+}
+
+// iPhone XR specific fixes
+@media only screen 
+  and (device-width: 414px) 
+  and (device-height: 896px) 
+  and (-webkit-device-pixel-ratio: 2) {
+  .temples-page {
+    padding: 1rem 0.8rem;
+    
+    .temples-header {
+      h1 {
+        font-size: 1.7rem;
+      }
+      
+      .search-box input {
+        font-size: 16px; // Prevent iOS zoom on input
+      }
+    }
+    
+    .temples-container .temples-grid {
+      gap: 1.2rem;
     }
   }
 }

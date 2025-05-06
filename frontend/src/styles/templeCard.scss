@@ -14,6 +14,8 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   animation: fadeInUp 0.6s ease-out forwards;
   opacity: 0;
   transform: translateY(20px);
+  margin: 0 0.5rem; // Add horizontal margin
+  max-width: 100%; // Ensure it doesn't overflow
 
   &:hover {
     transform: translateY(-5px);
@@ -26,6 +28,8 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background-position: center;
     transition: transform 0.5s ease;
     background-color: #f5f5f5; // Fallback color
+    width: 100%;
+    max-width: 100%; // Prevent overflow
   }
 
   &:hover .temple-image {
@@ -33,12 +37,13 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
 
   .temple-info {
-    padding: 1.5rem;
+    padding: 1.2rem; // Adjusted padding for mobile
 
     h3 {
       margin-bottom: 0.5rem;
       color: $primary-color;
-      font-size: 1.3rem;
+      font-size: clamp(1.1rem, 4vw, 1.3rem); // Responsive font size
+      word-break: break-word; // Prevent text overflow
     }
 
     .location {
@@ -47,6 +52,7 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       margin-bottom: 0.8rem;
       display: flex;
       align-items: center;
+      font-size: clamp(0.85rem, 3vw, 0.95rem); // Responsive font size
       
       &::before {
         content: '📍';
@@ -58,6 +64,8 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       margin-bottom: 1.5rem;
       color: lighten($text-color, 15%);
       line-height: 1.5;
+      font-size: clamp(0.85rem, 3vw, 0.95rem); // Responsive font size
+      word-break: break-word; // Prevent text overflow
     }
 
     .learn-more {
@@ -72,6 +80,7 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       text-align: center;
       width: 100%;
       transition: all 0.3s ease;
+      font-size: clamp(0.9rem, 3vw, 1rem); // Responsive font size
 
       &:hover {
         background-color: darken($primary-color, 10%);
@@ -88,10 +97,44 @@ $shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 // Responsive styles
+@media (max-width: 768px) {
+  .temple-card {
+    .temple-image {
+      height: 180px; // Slightly smaller image on tablet
+    }
+  }
+}
+
 @media (max-width: 480px) {
   .temple-card {
+    margin: 0 0.3rem; // Smaller margin on mobile
+    
     .temple-info {
-      padding: 1.2rem;
+      padding: 1rem;
+      
+      h3 {
+        font-size: 1.1rem;
+      }
+      
+      .learn-more {
+        padding: 0.5rem 1rem;
+      }
+    }
+  }
+}
+
+// iPhone XR specific fixes
+@media only screen 
+  and (device-width: 414px) 
+  and (device-height: 896px) 
+  and (-webkit-device-pixel-ratio: 2) {
+  .temple-card {
+    .temple-image {
+      height: 160px; // Adjusted height for iPhone XR
+    }
+    
+    .temple-info {
+      padding: 0.8rem;
       
       h3 {
         font-size: 1.2rem;

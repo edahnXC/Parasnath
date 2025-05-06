@@ -7,12 +7,16 @@ $light-color: #f8f9fa;
 .temple-details {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 1rem; // Adjusted padding for mobile
   background: white;
   border-radius: 8px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: relative;
   animation: fadeIn 0.4s ease-out;
+  box-sizing: border-box;
+  width: calc(100% - 1rem); // Ensure it doesn't overflow viewport
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 
   .close-button {
     position: absolute;
@@ -20,10 +24,12 @@ $light-color: #f8f9fa;
     right: 1rem;
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: 1.8rem; // Slightly smaller for mobile
     cursor: pointer;
     color: $primary-color;
     transition: transform 0.2s;
+    padding: 0.5rem; // Better touch target
+    z-index: 10;
 
     &:hover {
       transform: scale(1.2);
@@ -33,16 +39,18 @@ $light-color: #f8f9fa;
   .temple-details-header {
     text-align: center;
     margin-bottom: 2rem;
+    padding: 0 0.5rem; // Prevent text overflow
 
     h2 {
       color: $primary-color;
-      font-size: 2rem;
+      font-size: clamp(1.5rem, 5vw, 2rem); // Responsive font size
       margin-bottom: 0.5rem;
+      word-break: break-word; // Prevent long words from overflowing
     }
 
     .location {
       color: $secondary-color;
-      font-size: 1.2rem;
+      font-size: clamp(1rem, 3vw, 1.2rem); // Responsive font size
       font-weight: 500;
     }
   }
@@ -51,6 +59,7 @@ $light-color: #f8f9fa;
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
+    padding: 0 0.5rem; // Add padding
 
     @media (min-width: 900px) {
       grid-template-columns: 1fr 1fr;
@@ -60,8 +69,11 @@ $light-color: #f8f9fa;
   .temple-image {
     img {
       width: 100%;
+      max-width: 100%; // Ensure image doesn't overflow
+      height: auto;
       border-radius: 8px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      display: block;
     }
   }
 
@@ -72,7 +84,7 @@ $light-color: #f8f9fa;
       h3 {
         color: $primary-color;
         margin-bottom: 0.8rem;
-        font-size: 1.4rem;
+        font-size: clamp(1.2rem, 4vw, 1.4rem); // Responsive font size
         border-bottom: 2px solid $secondary-color;
         padding-bottom: 0.5rem;
         display: inline-block;
@@ -81,26 +93,35 @@ $light-color: #f8f9fa;
       p {
         color: $text-color;
         line-height: 1.6;
+        font-size: clamp(0.9rem, 3vw, 1rem); // Responsive font size
+        word-break: break-word; // Prevent text overflow
       }
     }
 
     .info-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 1.5rem;
+
+      @media (min-width: 500px) {
+        grid-template-columns: 1fr 1fr;
+      }
 
       .info-item {
         background: $light-color;
         padding: 1rem;
         border-radius: 6px;
+        word-break: break-word; // Prevent text overflow
 
         h4 {
           color: $secondary-color;
           margin-bottom: 0.5rem;
+          font-size: clamp(0.9rem, 3vw, 1.1rem); // Responsive font size
         }
 
         p {
           color: $text-color;
+          font-size: clamp(0.85rem, 3vw, 0.95rem); // Responsive font size
         }
       }
     }
@@ -110,4 +131,22 @@ $light-color: #f8f9fa;
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
+}
+
+// iPhone XR specific fixes
+@media only screen 
+  and (device-width: 414px) 
+  and (device-height: 896px) 
+  and (-webkit-device-pixel-ratio: 2) {
+  .temple-details {
+    padding: 1.5rem 0.8rem;
+    
+    .temple-details-header h2 {
+      font-size: 1.6rem;
+    }
+    
+    .info-grid {
+      grid-template-columns: 1fr !important; // Force single column on iPhone XR
+    }
+  }
 }

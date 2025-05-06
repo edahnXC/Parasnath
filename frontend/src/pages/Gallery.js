@@ -119,12 +119,14 @@ const Gallery = () => {
         {filteredItems.map(item => (
           <div key={item.id} className="gallery-item">
             {item.type === 'video' ? (
-              <video controls className="media-item">
-                <source src={item.src} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              <div className="video-container">
+                <video controls className="media-item">
+                  <source src={item.src} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
             ) : (
-              <img src={item.src} alt={item.alt} className="media-item" />
+              <img src={item.src} alt={item.alt} className="media-item" loading="lazy" />
             )}
             <div className="caption">{item.alt}</div>
           </div>

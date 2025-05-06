@@ -277,6 +277,39 @@ $transition: all 0.3s ease;
       .temples-grid {
         grid-template-columns: 1fr;
       }
+      
+      .temples-info {
+        padding: 1.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .temples-page {
+    padding: 1rem;
+
+    .temples-header {
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
+    }
+
+    .search-box {
+      input {
+        padding: 0.7rem 1rem 0.7rem 2.2rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    .temples-container {
+      .temples-grid {
+        gap: 1.5rem;
+      }
     }
   }
 }

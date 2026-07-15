@@ -42,6 +42,7 @@ app.UseCors("AllowAngular");
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapFallbackToFile("index.html");
 
 // Auto-seed database at startup
 using (var scope = app.Services.CreateScope())

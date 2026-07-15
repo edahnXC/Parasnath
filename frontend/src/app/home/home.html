@@ -1,5 +1,5 @@
 <!-- Hero Section -->
-<section class="hero-section">
+<section class="hero-section" [ngStyle]="siteSettings['HomeHeroImage'] ? {'background-image': 'url(' + siteSettings['HomeHeroImage'] + ')'} : {}">
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <h1 class="reveal">Shikharji<br/><span>The Peak of Salvation</span></h1>
@@ -23,7 +23,7 @@
     </div>
     <div class="intro-image-container reveal-right">
       <div class="image-wrapper">
-        <img src="https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800" alt="Parasnath Mountain peak view" />
+        <img [src]="siteSettings['HomeIntroImage'] || 'https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800'" alt="Parasnath Mountain peak view" />
         <div class="image-accent-border"></div>
       </div>
     </div>

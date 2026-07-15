@@ -17,7 +17,11 @@ import { forkJoin } from 'rxjs';
 export class Admin implements OnInit {
   temples: Temple[] = [];
   routes: TrekkingRoute[] = [];
-  activeTab: 'temples' | 'routes' = 'temples';
+  galleryImages: any[] = [];
+  ecoItems: any[] = [];
+  siteSettings: { [key: string]: string } = { HomeHeroImage: '', HomeIntroImage: '' };
+  
+  activeTab: 'temples' | 'routes' | 'gallery' | 'eco' | 'settings' = 'temples';
   loading = true;
 
   // Modals & States
@@ -62,6 +66,14 @@ export class Admin implements OnInit {
     images: []
   };
 
+  // Gallery Form Model
+  showGalleryModal = false;
+  galleryForm: any = { url: '', title: '', description: '' };
+
+  // Eco Form Model
+  showEcoModal = false;
+  ecoForm: any = { type: 'flora', name: '', scientificName: '', description: '', imageUrl: '' };
+
   constructor(
     private templeService: TempleService,
     private trekkingService: TrekkingService,
@@ -76,11 +88,17 @@ export class Admin implements OnInit {
     this.loading = true;
     forkJoin({
       temples: this.templeService.getTemples(),
-      routes: this.trekkingService.getTrekkingRoutes()
+      routes: this.trekkingService.getTrekkingRoutes(),
+      gallery: this.http.get<any[]>(`${environment.apiUrl}/api/gallery`),
+      eco: this.http.get<any[]>(`${environment.apiUrl}/api/eco`),
+      settings: this.http.get<any>(`${environment.apiUrl}/api/settings`)
     }).subscribe({
       next: (res) => {
         this.temples = res.temples;
         this.routes = res.routes;
+        this.galleryImages = res.gallery;
+        this.ecoItems = res.eco;
+        this.siteSettings = res.settings;
         this.loading = false;
         setTimeout(() => {
           window.dispatchEvent(new CustomEvent('data-loaded'));
@@ -99,7 +117,7 @@ export class Admin implements OnInit {
   // =============================
   // IMAGE DYNAMIC UPLOAD HELPER
   // =============================
-  onImageSelected(event: any, target: 'temple-main' | 'route-main' | 'waypoint') {
+  onImageSelected(event: any, target: 'temple-main' | 'route-main' | 'waypoint' | 'gallery' | 'eco' | 'setting-hero' | 'setting-intro') {
     const file = event.target.files[0];
     if (!file) return;
 
@@ -114,6 +132,14 @@ export class Admin implements OnInit {
           this.routeForm.mainImage = res.imageUrl;
         } else if (target === 'waypoint') {
           this.newWaypoint.images = [res.imageUrl];
+        } else if (target === 'gallery') {
+          this.galleryForm.url = res.imageUrl;
+        } else if (target === 'eco') {
+          this.ecoForm.imageUrl = res.imageUrl;
+        } else if (target === 'setting-hero') {
+          this.siteSettings['HomeHeroImage'] = res.imageUrl;
+        } else if (target === 'setting-intro') {
+          this.siteSettings['HomeIntroImage'] = res.imageUrl;
         }
       },
       error: (err) => {
@@ -256,5 +282,76 @@ export class Admin implements OnInit {
     if (this.routeForm.waypoints) {
       this.routeForm.waypoints.splice(index, 1);
     }
+  }
+
+  // =============================
+  // GALLERY CRUD HANDLERS
+  // =============================
+  openAddGallery() {
+    this.galleryForm = { url: '', title: '', description: '' };
+    this.showGalleryModal = true;
+  }
+
+  saveGallery() {
+    if (!this.galleryForm.url || !this.galleryForm.title) return;
+    this.http.post(`${environment.apiUrl}/api/gallery`, this.galleryForm).subscribe({
+      next: () => {
+        this.showGalleryModal = false;
+        this.refreshData();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  deleteGallery(id: number) {
+    if (confirm('Delete this image?')) {
+      this.http.delete(`${environment.apiUrl}/api/gallery/${id}`).subscribe({
+        next: () => this.refreshData(),
+        error: (err) => console.error(err)
+      });
+    }
+  }
+
+  // =============================
+  // ECO ITEMS CRUD HANDLERS
+  // =============================
+  openAddEco() {
+    this.ecoForm = { type: 'flora', name: '', scientificName: '', description: '', imageUrl: '' };
+    this.showEcoModal = true;
+  }
+
+  saveEco() {
+    if (!this.ecoForm.name || !this.ecoForm.imageUrl) return;
+    this.http.post(`${environment.apiUrl}/api/eco`, this.ecoForm).subscribe({
+      next: () => {
+        this.showEcoModal = false;
+        this.refreshData();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  deleteEco(id: number) {
+    if (confirm('Delete this item?')) {
+      this.http.delete(`${environment.apiUrl}/api/eco/${id}`).subscribe({
+        next: () => this.refreshData(),
+        error: (err) => console.error(err)
+      });
+    }
+  }
+
+  // =============================
+  // SETTINGS HANDLERS
+  // =============================
+  saveSettings() {
+    this.http.put(`${environment.apiUrl}/api/settings`, this.siteSettings).subscribe({
+      next: () => {
+        alert('Settings saved successfully!');
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Failed to save settings.');
+      }
+    });
   }
 }

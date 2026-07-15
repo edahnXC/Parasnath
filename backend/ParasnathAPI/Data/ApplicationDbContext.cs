@@ -14,6 +14,9 @@ namespace ParasnathAPI.Data
         public DbSet<Temple> Temples => Set<Temple>();
         public DbSet<TrekkingRoute> TrekkingRoutes => Set<TrekkingRoute>();
         public DbSet<Waypoint> Waypoints => Set<Waypoint>();
+        public DbSet<GalleryImage> GalleryImages => Set<GalleryImage>();
+        public DbSet<EcoItem> EcoItems => Set<EcoItem>();
+        public DbSet<SiteSetting> SiteSettings => Set<SiteSetting>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

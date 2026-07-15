@@ -10,10 +10,15 @@
     <div class="tabs-group">
       <button [class.active]="activeTab === 'temples'" (click)="activeTab = 'temples'" class="tab-btn">Temples</button>
       <button [class.active]="activeTab === 'routes'" (click)="activeTab = 'routes'" class="tab-btn">Trekking Routes</button>
+      <button [class.active]="activeTab === 'gallery'" (click)="activeTab = 'gallery'" class="tab-btn">Gallery</button>
+      <button [class.active]="activeTab === 'eco'" (click)="activeTab = 'eco'" class="tab-btn">Flora & Fauna</button>
+      <button [class.active]="activeTab === 'settings'" (click)="activeTab = 'settings'" class="tab-btn">Settings</button>
     </div>
     
     <button *ngIf="activeTab === 'temples'" (click)="openAddTemple()" class="btn">Add New Temple</button>
     <button *ngIf="activeTab === 'routes'" (click)="openAddRoute()" class="btn">Add New Route</button>
+    <button *ngIf="activeTab === 'gallery'" (click)="openAddGallery()" class="btn">Add Gallery Image</button>
+    <button *ngIf="activeTab === 'eco'" (click)="openAddEco()" class="btn">Add Eco Item</button>
   </div>
 
   <div class="loading-spinner" *ngIf="loading">
@@ -83,6 +88,93 @@
         </tr>
       </tbody>
     </table>
+  </div>
+
+  <!-- GALLERY TAB -->
+  <div class="tab-content card-glass reveal" *ngIf="!loading && activeTab === 'gallery'">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let img of galleryImages">
+          <td><img [src]="img.url" [alt]="img.title" class="table-thumb" /></td>
+          <td><strong>{{ img.title }}</strong></td>
+          <td>{{ img.description }}</td>
+          <td class="action-cell">
+            <button (click)="deleteGallery(img.id)" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="galleryImages.length === 0">
+          <td colspan="4" class="empty-cell">No gallery images found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ECO TAB -->
+  <div class="tab-content card-glass reveal" *ngIf="!loading && activeTab === 'eco'">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Type</th>
+          <th>Name</th>
+          <th>Scientific Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let eco of ecoItems">
+          <td><img [src]="eco.imageUrl" [alt]="eco.name" class="table-thumb" /></td>
+          <td><span class="badge" [ngClass]="eco.type">{{ eco.type | titlecase }}</span></td>
+          <td><strong>{{ eco.name }}</strong></td>
+          <td>{{ eco.scientificName }}</td>
+          <td class="action-cell">
+            <button (click)="deleteEco(eco.id)" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="ecoItems.length === 0">
+          <td colspan="5" class="empty-cell">No Flora & Fauna items found.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SETTINGS TAB -->
+  <div class="tab-content card-glass reveal" *ngIf="!loading && activeTab === 'settings'">
+    <form (ngSubmit)="saveSettings()" class="settings-form">
+      <h3>Home Page Banners</h3>
+      
+      <div class="form-group image-upload-group">
+        <label>Hero Background Image</label>
+        <div class="upload-controls">
+          <input type="file" (change)="onImageSelected($event, 'setting-hero')" accept="image/*" class="file-input" />
+        </div>
+        <div class="image-preview" *ngIf="siteSettings['HomeHeroImage']">
+          <img [src]="siteSettings['HomeHeroImage']" alt="Hero Preview" />
+        </div>
+      </div>
+
+      <div class="form-group image-upload-group">
+        <label>Intro Section Side Image</label>
+        <div class="upload-controls">
+          <input type="file" (change)="onImageSelected($event, 'setting-intro')" accept="image/*" class="file-input" />
+        </div>
+        <div class="image-preview" *ngIf="siteSettings['HomeIntroImage']">
+          <img [src]="siteSettings['HomeIntroImage']" alt="Intro Preview" />
+        </div>
+      </div>
+
+      <div class="form-actions mt-4">
+        <button type="submit" class="btn">Save Site Settings</button>
+      </div>
+    </form>
   </div>
 
   <!-- ============================= -->
@@ -279,6 +371,81 @@
         <div class="modal-footer">
           <button type="button" (click)="showRouteModal = false" class="btn btn-secondary">Cancel</button>
           <button type="submit" [disabled]="routeF.invalid" class="btn">Save Route</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= -->
+  <!-- GALLERY FORM MODAL            -->
+  <!-- ============================= -->
+  <div class="modal-overlay" *ngIf="showGalleryModal">
+    <div class="modal-card card-glass">
+      <div class="modal-header">
+        <h2>Add Gallery Image</h2>
+        <button class="modal-close" (click)="showGalleryModal = false">×</button>
+      </div>
+      <form (ngSubmit)="saveGallery()" #galleryF="ngForm" class="modal-body">
+        <div class="form-group">
+          <label>Title*</label>
+          <input type="text" [(ngModel)]="galleryForm.title" name="title" required class="form-input" />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" [(ngModel)]="galleryForm.description" name="description" class="form-input" />
+        </div>
+        <div class="form-group image-upload-group">
+          <label>Photo*</label>
+          <input type="file" (change)="onImageSelected($event, 'gallery')" accept="image/*" class="file-input" />
+          <div class="image-preview" *ngIf="galleryForm.url"><img [src]="galleryForm.url" /></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="showGalleryModal = false" class="btn btn-secondary">Cancel</button>
+          <button type="submit" [disabled]="galleryF.invalid || !galleryForm.url" class="btn">Save Image</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= -->
+  <!-- ECO FORM MODAL                -->
+  <!-- ============================= -->
+  <div class="modal-overlay" *ngIf="showEcoModal">
+    <div class="modal-card card-glass">
+      <div class="modal-header">
+        <h2>Add Flora/Fauna Item</h2>
+        <button class="modal-close" (click)="showEcoModal = false">×</button>
+      </div>
+      <form (ngSubmit)="saveEco()" #ecoF="ngForm" class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Type*</label>
+            <select [(ngModel)]="ecoForm.type" name="type" required class="form-input">
+              <option value="flora">Flora (Plants)</option>
+              <option value="fauna">Fauna (Animals)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Name*</label>
+            <input type="text" [(ngModel)]="ecoForm.name" name="name" required class="form-input" />
+          </div>
+          <div class="form-group">
+            <label>Scientific Name</label>
+            <input type="text" [(ngModel)]="ecoForm.scientificName" name="scientificName" class="form-input" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea [(ngModel)]="ecoForm.description" name="description" rows="3" class="form-input"></textarea>
+        </div>
+        <div class="form-group image-upload-group">
+          <label>Photo*</label>
+          <input type="file" (change)="onImageSelected($event, 'eco')" accept="image/*" class="file-input" />
+          <div class="image-preview" *ngIf="ecoForm.imageUrl"><img [src]="ecoForm.imageUrl" /></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="showEcoModal = false" class="btn btn-secondary">Cancel</button>
+          <button type="submit" [disabled]="ecoF.invalid || !ecoForm.imageUrl" class="btn">Save Item</button>
         </div>
       </form>
     </div>

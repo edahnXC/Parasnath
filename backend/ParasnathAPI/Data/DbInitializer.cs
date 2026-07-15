@@ -129,6 +129,48 @@ namespace ParasnathAPI.Data
 
             context.TrekkingRoutes.AddRange(routes);
             context.SaveChanges();
+
+            // Seed Gallery Images
+            if (!context.GalleryImages.Any())
+            {
+                var photos = new List<GalleryImage>
+                {
+                    new GalleryImage { Url = "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800", Title = "Sunrise at the Summit", Description = "Misty golden sunrise rays hitting the peaks of the Tirthankara shrines." },
+                    new GalleryImage { Url = "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800", Title = "Mountain Slopes", Description = "Dense forests carpeting the hills on the climb from Madhuban." },
+                    new GalleryImage { Url = "https://images.unsplash.com/photo-1605649487212-47bdab064df7?q=80&w=800", Title = "Shikharji Temple Domes", Description = "White marble domes reaching to the skies under the mountain fog." },
+                    new GalleryImage { Url = "https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=800", Title = "Tall Sal Forests", Description = "Sal trees lining the paved stone trail." },
+                    new GalleryImage { Url = "https://images.unsplash.com/photo-1515002246390-7bf7e8f87b54?q=80&w=800", Title = "Deciduous Vegetation", Description = "Close up of rare medicinal ferns growing on mountain slopes." },
+                    new GalleryImage { Url = "https://images.unsplash.com/photo-1602616191538-40d02b26af29?q=80&w=800", Title = "Bhomia Baba Stone Carvings", Description = "Intricate patterns carved on the ancient stone blocks of the guardian temple." }
+                };
+                context.GalleryImages.AddRange(photos);
+                context.SaveChanges();
+            }
+
+            // Seed Flora/Fauna (EcoItems)
+            if (!context.EcoItems.Any())
+            {
+                var ecoItems = new List<EcoItem>
+                {
+                    new EcoItem { Type = "flora", Name = "Sal Tree (Shorea robusta)", ScientificName = "Shorea robusta", Description = "The dominant tree species covering the slopes of Parasnath Hill. Its wood is highly valued for durability, and the forest canopy provides shelter to various bird species.", ImageUrl = "https://images.unsplash.com/photo-1502082553048-f009c37129b9?q=80&w=600" },
+                    new EcoItem { Type = "flora", Name = "Medicinal Herbs", ScientificName = "Various Species", Description = "The hill is renowned for its diverse collection of rare Ayurvedic herbs. Scholars and botanists visit to study wild species used in traditional medicines.", ImageUrl = "https://images.unsplash.com/photo-1515002246390-7bf7e8f87b54?q=80&w=600" },
+                    new EcoItem { Type = "fauna", Name = "Wild Boar (Sus scrofa)", ScientificName = "Sus scrofa", Description = "Commonly found roaming in the dense forest layers of the slopes. They play a key role in the forest ecosystem by turning up the soil during feeding.", ImageUrl = "https://images.unsplash.com/photo-1590502593747-42a996133562?q=80&w=600" },
+                    new EcoItem { Type = "fauna", Name = "Deciduous Birds", ScientificName = "Avifauna", Description = "Parasnath is a paradise for birdwatchers, featuring rare species of drongos, hornbills, and thrushes nesting in the tall Sal branches.", ImageUrl = "https://images.unsplash.com/photo-1444464666168-49d633b86797?q=80&w=600" }
+                };
+                context.EcoItems.AddRange(ecoItems);
+                context.SaveChanges();
+            }
+
+            // Seed Site Settings
+            if (!context.SiteSettings.Any())
+            {
+                var settings = new List<SiteSetting>
+                {
+                    new SiteSetting { Key = "HomeHeroImage", Value = "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=1600" },
+                    new SiteSetting { Key = "HomeIntroImage", Value = "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800" }
+                };
+                context.SiteSettings.AddRange(settings);
+                context.SaveChanges();
+            }
         }
     }
 }

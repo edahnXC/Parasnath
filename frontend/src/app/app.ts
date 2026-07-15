@@ -53,12 +53,22 @@ export class App implements OnInit, OnDestroy {
 
         this.completeLoadingProgress();
 
-        // Trigger reveal after a short delay to allow views to render
-        this.safetyTimeout = setTimeout(() => {
-          if (!this.revealDone) {
-            this.onDataLoaded();
-          }
-        }, 500);
+        // Trigger reveal after a short delay for static pages, but use a 4s safety net for dynamic ones
+        const isApiPage = event.urlAfterRedirects === '/' || event.urlAfterRedirects === '/temples' || event.urlAfterRedirects === '/trekking' || event.urlAfterRedirects === '/admin';
+        if (!isApiPage) {
+          this.safetyTimeout = setTimeout(() => {
+            if (!this.revealDone) {
+              this.onDataLoaded();
+            }
+          }, 150);
+        } else {
+          this.safetyTimeout = setTimeout(() => {
+            if (!this.revealDone) {
+              console.warn("Safety net triggered: data-loaded event timed out. Revealing content.");
+              this.onDataLoaded();
+            }
+          }, 4000);
+        }
       } else if (event instanceof NavigationCancel || event instanceof NavigationError) {
         this.completeLoadingProgress();
       }
@@ -108,7 +118,6 @@ export class App implements OnInit, OnDestroy {
 
   private onDataLoaded() {
     this.completeLoadingProgress();
-    if (this.revealDone) return;
     this.revealDone = true;
     this.cdr.detectChanges();
     setTimeout(() => this.initScrollReveal(), 50);
@@ -150,6 +159,9 @@ export class App implements OnInit, OnDestroy {
     ScrollTrigger.getAll().forEach(t => t.kill());
 
     const animateEl = (el: HTMLElement, fromVars: any, toVars: any, delay = 0) => {
+      if (el.classList.contains('gsap-initialized')) return;
+      el.classList.add('gsap-initialized');
+
       const rect = el.getBoundingClientRect();
       const inViewport = rect.top < window.innerHeight;
 
@@ -175,19 +187,19 @@ export class App implements OnInit, OnDestroy {
       }
     };
 
-    gsap.utils.toArray<HTMLElement>('.reveal').forEach((el, i) => {
+    gsap.utils.toArray<HTMLElement>('.reveal:not(.gsap-initialized)').forEach((el, i) => {
       animateEl(el, { opacity: 0, y: 30 }, { opacity: 1, y: 0 }, i * 0.05);
     });
 
-    gsap.utils.toArray<HTMLElement>('.reveal-left').forEach(el => {
+    gsap.utils.toArray<HTMLElement>('.reveal-left:not(.gsap-initialized)').forEach(el => {
       animateEl(el, { opacity: 0, x: -40 }, { opacity: 1, x: 0 });
     });
 
-    gsap.utils.toArray<HTMLElement>('.reveal-right').forEach(el => {
+    gsap.utils.toArray<HTMLElement>('.reveal-right:not(.gsap-initialized)').forEach(el => {
       animateEl(el, { opacity: 0, x: 40 }, { opacity: 1, x: 0 });
     });
 
-    gsap.utils.toArray<HTMLElement>('.reveal-scale').forEach((el, i) => {
+    gsap.utils.toArray<HTMLElement>('.reveal-scale:not(.gsap-initialized)').forEach((el, i) => {
       animateEl(
         el,
         { opacity: 0, scale: 0.92 },

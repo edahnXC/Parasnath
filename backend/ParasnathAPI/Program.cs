@@ -1,5 +1,9 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using ParasnathAPI.Data;
+using System;
+using System.Text;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,6 +14,34 @@ builder.Services.AddControllers();
 // Configure DB Context with SQLite
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Configure JWT Authentication
+var jwtSecret = builder.Configuration["AuthSettings:JwtSecret"];
+var key = Encoding.ASCII.GetBytes(jwtSecret);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false; // set to true in production
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = true,
+        ValidIssuer = builder.Configuration["AuthSettings:JwtIssuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["AuthSettings:JwtAudience"],
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+    };
+});
+
+builder.Services.AddAuthorization();
 
 // Configure CORS
 builder.Services.AddCors(options =>
@@ -39,6 +71,7 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 app.UseCors("AllowAngular");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

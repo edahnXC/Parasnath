@@ -6,6 +6,7 @@ import { TempleService, Temple } from '../services/temple.service';
 import { TrekkingService, TrekkingRoute, Waypoint } from '../services/trekking.service';
 import { environment } from '../../environments/environment';
 import { forkJoin } from 'rxjs';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -77,7 +78,8 @@ export class Admin implements OnInit {
   constructor(
     private templeService: TempleService,
     private trekkingService: TrekkingService,
-    private http: HttpClient
+    private http: HttpClient,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -353,5 +355,9 @@ export class Admin implements OnInit {
         alert('Failed to save settings.');
       }
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

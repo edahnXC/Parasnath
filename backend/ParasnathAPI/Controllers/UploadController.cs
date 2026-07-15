@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using System;
@@ -46,6 +47,7 @@ namespace ParasnathAPI.Controllers
         }
 
         // POST: api/upload
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> UploadImage(IFormFile file)
         {

@@ -6,6 +6,8 @@ import { FloraFauna } from './flora-fauna/flora-fauna';
 import { Gallery } from './gallery/gallery';
 import { Contact } from './contact/contact';
 import { Admin } from './admin/admin';
+import { Login } from './login/login';
+import { authGuard } from './services/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -14,6 +16,7 @@ export const routes: Routes = [
   { path: 'flora-fauna', component: FloraFauna },
   { path: 'gallery', component: Gallery },
   { path: 'contact', component: Contact },
-  { path: 'admin', component: Admin },
+  { path: 'admin/login', component: Login },
+  { path: 'admin', component: Admin, canActivate: [authGuard] },
   { path: '**', redirectTo: '' } // Catch-all wildcard redirect to home
 ];

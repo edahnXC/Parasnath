@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ParasnathAPI.Data;
 using ParasnathAPI.Models;
@@ -23,6 +24,7 @@ namespace ParasnathAPI.Controllers
             return settings.ToDictionary(s => s.Key, s => s.Value);
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> UpdateSettings(Dictionary<string, string> settings)
         {

@@ -1,8 +1,13 @@
 <div class="admin-container preview-section">
   <div class="section-header reveal">
-    <span class="sub-label">Control Center</span>
-    <h1>Admin Panel</h1>
-    <p class="section-desc">Manage the shrines, trekking routes, and waypoint milestones published on the live site.</p>
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; width: 100%;">
+      <div>
+        <span class="sub-label">Control Center</span>
+        <h1>Admin Panel</h1>
+        <p class="section-desc">Manage the shrines, trekking routes, and waypoint milestones published on the live site.</p>
+      </div>
+      <button (click)="logout()" class="btn btn-secondary">Logout</button>
+    </div>
   </div>
 
   <!-- Tab Selectors -->

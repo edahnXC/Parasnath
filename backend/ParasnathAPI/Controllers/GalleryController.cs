@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ParasnathAPI.Data;
 using ParasnathAPI.Models;
@@ -35,6 +36,7 @@ namespace ParasnathAPI.Controllers
             return image;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<GalleryImage>> PostGalleryImage(GalleryImage image)
         {
@@ -44,6 +46,7 @@ namespace ParasnathAPI.Controllers
             return CreatedAtAction(nameof(GetGalleryImage), new { id = image.Id }, image);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteGalleryImage(int id)
         {

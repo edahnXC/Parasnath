@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ParasnathAPI.Data;
 using ParasnathAPI.Models;
@@ -40,6 +41,7 @@ namespace ParasnathAPI.Controllers
             return item;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<EcoItem>> PostEcoItem(EcoItem item)
         {
@@ -49,6 +51,7 @@ namespace ParasnathAPI.Controllers
             return CreatedAtAction(nameof(GetEcoItem), new { id = item.Id }, item);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEcoItem(int id)
         {

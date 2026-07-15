@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ParasnathAPI.Data;
 using ParasnathAPI.Models;
@@ -44,6 +45,7 @@ namespace ParasnathAPI.Controllers
         }
 
         // POST: api/trekking-routes
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<TrekkingRoute>> PostTrekkingRoute(TrekkingRoute route)
         {
@@ -55,6 +57,7 @@ namespace ParasnathAPI.Controllers
         }
 
         // PUT: api/trekking-routes/5
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTrekkingRoute(int id, TrekkingRoute route)
         {
@@ -103,6 +106,7 @@ namespace ParasnathAPI.Controllers
         }
 
         // DELETE: api/trekking-routes/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTrekkingRoute(int id)
         {

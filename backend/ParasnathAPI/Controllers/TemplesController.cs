@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using ParasnathAPI.Data;
 using ParasnathAPI.Models;
@@ -40,6 +41,7 @@ namespace ParasnathAPI.Controllers
         }
 
         // POST: api/temples
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Temple>> PostTemple(Temple temple)
         {
@@ -51,6 +53,7 @@ namespace ParasnathAPI.Controllers
         }
 
         // PUT: api/temples/5
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTemple(int id, Temple temple)
         {
@@ -81,6 +84,7 @@ namespace ParasnathAPI.Controllers
         }
 
         // DELETE: api/temples/5
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTemple(int id)
         {

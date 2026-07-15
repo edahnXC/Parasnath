@@ -1,0 +1,281 @@
+// Variables
+$primary-color: #4a6b2a;
+$secondary-color: #6a8a4a;
+$text-color: #2c3e50;
+$light-color: #f8f9fa;
+$shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+// Animations
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+@keyframes colorShift {
+  0% { color: $primary-color; }
+  50% { color: $secondary-color; }
+  100% { color: $primary-color; }
+}
+
+// Base Styles
+.flora-fauna-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem 3rem 1.5rem;
+  perspective: 1000px;
+
+  .intro-section {
+    text-align: center;
+    margin: 3rem 0;
+    transform-style: preserve-3d;
+
+    h2 {
+      color: $primary-color;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      animation: float 3s ease-in-out infinite;
+      transform: translateZ(20px);
+
+      .icon {
+        margin-right: 0.8rem;
+        animation: pulse 2s infinite;
+        transform: translateZ(15px);
+      }
+    }
+
+    p {
+      color: $text-color;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto 2rem auto;
+      font-size: 1.1rem;
+      transform: translateZ(10px);
+    }
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 3rem 0 2rem 0;
+    transform-style: preserve-3d;
+
+    h2 {
+      color: $text-color;
+      margin: 0 0 0 1rem;
+      background: linear-gradient(90deg, $primary-color, $secondary-color);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      transition: all 0.5s ease;
+      transform: translateZ(15px);
+
+      &:hover {
+        transform: skewX(-5deg) translateZ(20px);
+        text-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      }
+    }
+
+    .icon {
+      color: $primary-color;
+      font-size: 1.8rem;
+      animation: pulse 2s infinite;
+      transform: translateZ(15px);
+    }
+  }
+
+  .content-box {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    margin: 2rem 0;
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: $shadow;
+    transform-style: preserve-3d;
+
+    &.reversed {
+      flex-direction: row-reverse;
+    }
+
+    .text-content {
+      flex: 1;
+      transform: translateZ(10px);
+
+      h3 {
+        color: $text-color;
+        margin-top: 0;
+        border-bottom: 2px solid $secondary-color;
+        padding-bottom: 0.5rem;
+        display: inline-block;
+        transform: translateZ(5px);
+      }
+
+      ul {
+        padding-left: 1.5rem;
+        color: $text-color;
+        transform: translateZ(5px);
+
+        li {
+          margin-bottom: 0.8rem;
+          line-height: 1.5;
+          transition: all 0.3s ease;
+          transform: translateZ(5px);
+
+          &:hover {
+            color: $primary-color;
+            transform: translateX(5px) translateZ(10px);
+          }
+        }
+      }
+
+      p {
+        color: lighten($text-color, 15%);
+        line-height: 1.6;
+        transform: translateZ(5px);
+      }
+    }
+
+    .image-content {
+      flex: 1;
+      transform: translateZ(10px);
+      
+      img {
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: $shadow;
+        transition: all 0.5s ease;
+        transform: translateZ(10px);
+
+        &:hover {
+          transform: scale(1.03) translateZ(15px);
+          box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+      }
+    }
+
+    .fauna-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+      transform: translateZ(5px);
+
+      .fauna-category {
+        h4 {
+          color: $primary-color;
+          margin: 0 0 0.5rem 0;
+          font-size: 1.1rem;
+          transform: translateZ(5px);
+        }
+
+        ul {
+          padding-left: 1rem;
+          margin: 0;
+          transform: translateZ(5px);
+
+          li {
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translateZ(5px);
+
+            &:hover {
+              color: $secondary-color;
+              font-weight: bold;
+              transform: translateX(5px) translateZ(10px);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .visit-info {
+    margin: 4rem 0;
+    text-align: center;
+    transform-style: preserve-3d;
+
+    h2 {
+      color: $text-color;
+      margin-bottom: 1.5rem;
+      animation: float 3s ease-in-out infinite;
+      transform: translateZ(20px);
+    }
+
+    .info-box {
+      background: $light-color;
+      border-radius: 8px;
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+      box-shadow: $shadow;
+      transform: translateZ(15px);
+
+      p {
+        color: $text-color;
+        line-height: 1.8;
+        margin: 0;
+        text-align: left;
+        transform: translateZ(10px);
+      }
+    }
+  }
+}
+
+// Reveal Animation
+.reveal {
+  opacity: 0;
+  transform: translateY(30px) rotateX(5deg);
+  transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+  perspective: 1000px;
+  
+  &.reveal-active {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+// Responsive Styles
+@media (max-width: 768px) {
+  .flora-fauna-page {
+    .content-box {
+      flex-direction: column;
+      padding: 1.5rem;
+
+      &.reversed {
+        flex-direction: column;
+      }
+
+      .text-content, .image-content {
+        width: 100%;
+      }
+    }
+
+    .fauna-grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+}

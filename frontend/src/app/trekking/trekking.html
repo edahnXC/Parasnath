@@ -1,0 +1,95 @@
+<div class="trekking-container preview-section">
+  <div class="section-header reveal">
+    <span class="sub-label">Adventure</span>
+    <h1>Trekking Trails of Parasnath</h1>
+    <p class="section-desc">Plan your climb up Sammed Shikharji. Track route markers, coordinates, and scenic milestones.</p>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading trail routes...</p>
+  </div>
+
+  <div class="trekking-layout" *ngIf="!loading && selectedRoute">
+    <!-- Left Column: Details & Waypoints list -->
+    <div class="trekking-details-column reveal-left">
+      <div class="route-selectors">
+        <button 
+          *ngFor="let route of routes" 
+          [class.btn-secondary]="selectedRoute.id !== route.id" 
+          (click)="selectRoute(route)" 
+          class="btn route-btn"
+        >
+          {{ route.name }}
+        </button>
+      </div>
+
+      <div class="route-details card-glass">
+        <h2>{{ selectedRoute.name }}</h2>
+        
+        <div class="meta-grid">
+          <div class="meta-card">
+            <strong>Starting Camp</strong>
+            <span>{{ selectedRoute.startingPoint }}</span>
+          </div>
+          <div class="meta-card">
+            <strong>Distance</strong>
+            <span>{{ selectedRoute.distance }} km</span>
+          </div>
+          <div class="meta-card">
+            <strong>Est. Duration</strong>
+            <span>{{ selectedRoute.duration }}</span>
+          </div>
+          <div class="meta-card">
+            <strong>Difficulty</strong>
+            <span class="badge" [ngClass]="selectedRoute.difficulty.toLowerCase()">{{ selectedRoute.difficulty }}</span>
+          </div>
+        </div>
+
+        <p class="route-desc">{{ selectedRoute.description }}</p>
+
+        <!-- Milestones list -->
+        <div class="milestones-section">
+          <h3>Trail Milestones</h3>
+          <div class="milestones-list">
+            <div 
+              *ngFor="let wp of selectedRoute.waypoints; let idx = index" 
+              class="milestone-item" 
+              [class.active]="selectedWaypoint?.id === wp.id"
+              (click)="selectWaypoint(wp)"
+            >
+              <div class="milestone-marker">{{ idx + 1 }}</div>
+              <div class="milestone-info">
+                <h4>{{ wp.name }}</h4>
+                <p>{{ wp.description }}</p>
+                <div class="coords">Lat: {{ wp.latitude }} | Lng: {{ wp.longitude }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Maps -->
+    <div class="trekking-map-column reveal-right">
+      <div class="map-wrapper card-glass">
+        <div class="map-error-panel" *ngIf="mapError">
+          <p>{{ mapError }}</p>
+        </div>
+        <div #mapContainer class="google-map-container" [class.hidden]="mapError !== null"></div>
+      </div>
+
+      <!-- Active Waypoint Photo Card below Map -->
+      <div class="active-waypoint-card card-glass" *ngIf="selectedWaypoint">
+        <div class="waypoint-gallery" *ngIf="selectedWaypoint.images.length > 0">
+          <img [src]="selectedWaypoint.images[0]" [alt]="selectedWaypoint.name" />
+        </div>
+        <div class="waypoint-text">
+          <span class="sub-label">Active Milestone</span>
+          <h3>{{ selectedWaypoint.name }}</h3>
+          <p>{{ selectedWaypoint.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

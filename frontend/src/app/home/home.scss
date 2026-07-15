@@ -1,0 +1,441 @@
+/* ============================= */
+/* HERO SECTION                  */
+/* ============================= */
+
+.hero-section {
+  position: relative;
+  min-height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 24px;
+  text-align: center;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1600');
+    background-size: cover;
+    background-position: center;
+    filter: var(--hero-bg-filter);
+    transition: filter var(--transition-base);
+    z-index: 0;
+  }
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--hero-overlay-start), var(--hero-overlay-end));
+  z-index: 1;
+  transition: background var(--transition-base);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+
+  h1 {
+    font-size: clamp(44px, 7vw, 76px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    color: var(--hero-text-title);
+    transition: color var(--transition-base);
+
+    span {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: #34d399; /* soft spring green */
+      background: linear-gradient(135deg, #34d399, #0d9488);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+  }
+
+  p {
+    font-size: clamp(16px, 2.5vw, 20px);
+    color: var(--hero-text-para);
+    max-width: 620px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+    text-shadow: var(--hero-text-shadow);
+    transition: color var(--transition-base), text-shadow var(--transition-base);
+  }
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ============================= */
+/* INTRODUCTION SECTION          */
+/* ============================= */
+
+.intro-section {
+  background: var(--bg-primary);
+}
+
+/* sub-label moved to styles.scss */
+
+.intro-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.intro-text {
+  h2 {
+    font-size: clamp(32px, 4vw, 46px);
+    line-height: 1.2;
+    margin-bottom: 24px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+  }
+}
+
+.intro-image-container {
+  position: relative;
+}
+
+.image-wrapper {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  
+  img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+
+    &:hover {
+      transform: scale(1.04);
+    }
+  }
+}
+
+.image-accent-border {
+  position: absolute;
+  top: 15px;
+  left: -15px;
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--accent);
+  border-radius: 20px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* ============================= */
+/* FEATURED TEMPLES SECTION      */
+/* ============================= */
+
+.section-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 60px;
+
+  h2 {
+    font-size: clamp(32px, 4vw, 42px);
+    margin-bottom: 16px;
+  }
+
+  .section-desc {
+    color: var(--text-secondary);
+    font-size: 1.05rem;
+  }
+}
+
+.temples-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.temple-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 0;
+
+  .card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 240px;
+    border-radius: 19px 19px 0 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 0;
+      transition: transform var(--transition-slow);
+    }
+
+    .tag-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(var(--accent-rgb), 0.95);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+  }
+
+  &:hover .card-img-wrapper img {
+    transform: scale(1.05);
+  }
+
+  .card-info {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    h3 {
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+    }
+
+    .location {
+      font-size: 0.85rem;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+      margin-bottom: 14px;
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .card-link {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color var(--transition-fast), padding-left var(--transition-fast);
+
+      &:hover {
+        color: var(--accent);
+        padding-left: 5px;
+      }
+    }
+  }
+}
+
+/* ============================= */
+/* FEATURED TREKKING SECTION     */
+/* ============================= */
+
+.trek-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.trek-image-box {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  height: 480px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .trek-overlay-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent, rgba(10,15,29,0.3));
+  }
+}
+
+.trek-info-box {
+  padding: 40px;
+  margin-left: -80px;
+  position: relative;
+  z-index: 10;
+
+  h2 {
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+}
+
+.meta-row {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 20px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .label {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.1em;
+    font-weight: 600;
+  }
+
+  .value {
+    font-size: 1.15rem;
+    font-weight: 700;
+  }
+
+  .badge {
+    font-size: 0.85rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+
+    &.easy {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.2);
+    }
+    
+    &.difficult {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.2);
+    }
+  }
+}
+
+.waypoints-preview {
+  margin-bottom: 30px;
+
+  h4 {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+}
+
+/* ============================= */
+/* QUICK SHORTCUTS               */
+/* ============================= */
+
+.shortcuts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.shortcut-card {
+  text-align: center;
+  padding: 40px;
+
+  .icon-box {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    margin-bottom: 24px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* ============================= */
+/* RESPONSIVE DESIGN             */
+/* ============================= */
+
+@media (max-width: 992px) {
+  .intro-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .intro-image-container {
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+  }
+  .trek-grid {
+    grid-template-columns: 1fr;
+  }
+  .trek-image-box {
+    height: 320px;
+  }
+  .trek-info-box {
+    margin-left: 0;
+    margin-top: -40px;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .shortcuts-grid {
+    grid-template-columns: 1fr;
+  }
+  .waypoints-preview ul {
+    grid-template-columns: 1fr;
+  }
+}

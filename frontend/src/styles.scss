@@ -1,0 +1,253 @@
+/* ============================= */
+/* GLOBAL THEME VARIABLES        */
+/* ============================= */
+
+:root {
+  --accent:        #0d9488; /* Premium Teal / Ocean accent */
+  --accent-rgb:    13, 148, 136;
+  --bg-primary:    #0a0f1d; /* Deep slate navy */
+  --bg-secondary:  #0f172a; /* Slate secondary */
+  --text-primary:  #f8fafc; /* Very light slate */
+  --text-secondary:#94a3b8; /* Muted slate */
+  --card-bg:       rgba(15, 23, 42, 0.45);
+  --card-border:   rgba(255, 255, 255, 0.06);
+  --navbar-bg:     rgba(10, 15, 29, 0.75);
+  --hero-gradient: linear-gradient(135deg, #0a0f1d 0%, #0f172a 50%, #0a0f1d 100%);
+  --shadow-sm:     0 2px 8px rgba(0,0,0,0.2);
+  --shadow-md:     0 8px 24px rgba(0,0,0,0.3);
+  --shadow-lg:     0 20px 48px rgba(0,0,0,0.4);
+  --transition-fast:  0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base:  0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:  0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Hero dark defaults */
+  --hero-text-title:   #ffffff;
+  --hero-text-para:    #e2e8f0;
+  --hero-text-shadow:  0 2px 4px rgba(0,0,0,0.3);
+  --hero-overlay-start:rgba(10, 15, 29, 0.45);
+  --hero-overlay-end:  var(--bg-primary);
+  --hero-bg-filter:    brightness(0.7) contrast(1.15);
+}
+
+/* ============================= */
+/* LIGHT MODE                    */
+/* ============================= */
+
+body.light-mode {
+  --bg-primary:    #fdfdfc; /* Warm Alabaster Sand background */
+  --bg-secondary:  #f4f4f1; /* Soft sand secondary */
+  --text-primary:  #1f2937; /* Deep charcoal text */
+  --text-secondary:#4b5563; /* Soft gray text */
+  --card-bg:       rgba(244, 244, 241, 0.6);
+  --card-border:   rgba(13, 148, 136, 0.08);
+  --navbar-bg:     rgba(253, 253, 252, 0.85);
+  --shadow-sm:     0 2px 8px rgba(0,0,0,0.03);
+  --shadow-md:     0 8px 24px rgba(0,0,0,0.05);
+  --shadow-lg:     0 20px 48px rgba(0,0,0,0.08);
+
+  /* Hero light defaults */
+  --hero-text-title:   #0a0f1d;
+  --hero-text-para:    #334155;
+  --hero-text-shadow:  none;
+  --hero-overlay-start:rgba(253, 253, 252, 0.4);
+  --hero-overlay-end:  var(--bg-primary);
+  --hero-bg-filter:    brightness(1.12) contrast(0.9) saturate(1.1);
+}
+
+/* ============================= */
+/* GLOBAL RESET & BODY           */
+/* ============================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  padding-top: 80px;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background var(--transition-base), color var(--transition-base);
+  overflow-x: hidden;
+  line-height: 1.7;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  margin-top: 0;
+}
+
+::selection {
+  background: rgba(var(--accent-rgb), 0.2);
+  color: var(--text-primary);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+/* ============================= */
+/* GLOBAL SECTION LAYOUT         */
+/* ============================= */
+
+.preview-section {
+  padding: 100px 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.preview-section h2 {
+  font-size: 42px;
+  line-height: 1.2;
+  margin-bottom: 48px;
+}
+
+/* ============================= */
+/* BUTTONS                       */
+/* ============================= */
+
+button, .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform var(--transition-fast),
+              box-shadow var(--transition-fast),
+              background var(--transition-fast);
+  will-change: transform;
+}
+
+button:hover, .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(var(--accent-rgb), 0.35);
+  background: #0b7c72;
+}
+
+.sub-label {
+  display: inline-block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.btn-secondary {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-primary);
+  color: var(--accent);
+}
+
+/* ============================= */
+/* GLASSMORPHISM CARD STYLE      */
+/* ============================= */
+
+.card-glass {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  -webkit-backdrop-filter: blur(16px) saturate(1.8);
+  backdrop-filter: blur(16px) saturate(1.8);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base),
+              box-shadow var(--transition-base),
+              border-color var(--transition-base);
+}
+
+.card-glass:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(var(--accent-rgb), 0.25);
+}
+
+/* ============================= */
+/* SCROLL REVEAL BASE CLASSES    */
+/* ============================= */
+
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
+  will-change: transform, opacity;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(50px);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+/* ============================= */
+/* RESPONSIVE UTILITIES          */
+/* ============================= */
+
+@media (max-width: 768px) {
+  body {
+    padding-top: 70px;
+  }
+  .preview-section {
+    padding: 60px 24px;
+  }
+  .preview-section h2 {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding-top: 64px;
+  }
+  .preview-section {
+    padding: 40px 16px;
+  }
+  .preview-section h2 {
+    font-size: 26px;
+  }
+}

@@ -1,0 +1,274 @@
+/* no home import */
+
+.trekking-container {
+  padding-top: 140px;
+}
+
+.trekking-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ============================= */
+/* ROUTE SELECTORS               */
+/* ============================= */
+
+.route-selectors {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.route-btn {
+  padding: 10px 22px;
+}
+
+/* ============================= */
+/* ROUTE DETAILS                  */
+/* ============================= */
+
+.route-details {
+  h2 {
+    font-size: 28px;
+    margin-bottom: 24px;
+  }
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 20px;
+}
+
+.meta-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  strong {
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+  }
+
+  span {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .badge {
+    align-self: flex-start;
+    font-size: 0.8rem;
+    padding: 2px 10px;
+    border-radius: 12px;
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.15);
+
+    &.easy {
+      background: rgba(16, 185, 129, 0.1);
+      color: #10b981;
+      border-color: rgba(16, 185, 129, 0.15);
+    }
+
+    &.difficult {
+      background: rgba(239, 68, 68, 0.1);
+      color: #ef4444;
+      border-color: rgba(239, 68, 68, 0.15);
+    }
+  }
+}
+
+.route-desc {
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+/* ============================= */
+/* MILESTONES                    */
+/* ============================= */
+
+.milestones-section {
+  h3 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+}
+
+.milestones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.milestone-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: rgba(var(--accent-rgb), 0.02);
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast), transform var(--transition-fast);
+
+  &:hover {
+    background: rgba(var(--accent-rgb), 0.05);
+    border-color: rgba(var(--accent-rgb), 0.2);
+    transform: translateX(4px);
+  }
+
+  &.active {
+    background: rgba(var(--accent-rgb), 0.08);
+    border-color: var(--accent);
+    box-shadow: var(--shadow-sm);
+  }
+}
+
+.milestone-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.milestone-info {
+  h4 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 600;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0 0 6px;
+  }
+
+  .coords {
+    font-size: 0.78rem;
+    color: var(--accent);
+    font-family: monospace;
+    font-weight: 600;
+  }
+}
+
+/* ============================= */
+/* MAP COLUMN                    */
+/* ============================= */
+
+.map-wrapper {
+  padding: 12px;
+  margin-bottom: 24px;
+}
+
+.google-map-container {
+  width: 100%;
+  height: 460px; /* Crucial: map container must have explicit height */
+  border-radius: 14px;
+  background: var(--bg-secondary);
+
+  &.hidden {
+    display: none;
+  }
+}
+
+.map-error-panel {
+  height: 460px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  color: #ef4444;
+  border: 1px dashed rgba(239, 68, 68, 0.3);
+  border-radius: 14px;
+  background: rgba(239, 68, 68, 0.02);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ============================= */
+/* ACTIVE WAYPOINT PHOTO CARD    */
+/* ============================= */
+
+.active-waypoint-card {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  align-items: center;
+}
+
+.waypoint-gallery {
+  width: 110px;
+  height: 110px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.waypoint-text {
+  h3 {
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+}
+
+/* ============================= */
+/* RESPONSIVE                    */
+/* ============================= */
+
+@media (max-width: 992px) {
+  .trekking-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .google-map-container, .map-error-panel {
+    height: 380px;
+  }
+}
+
+@media (max-width: 480px) {
+  .active-waypoint-card {
+    flex-direction: column;
+    text-align: center;
+  }
+  .waypoint-gallery {
+    margin: 0 auto;
+  }
+}

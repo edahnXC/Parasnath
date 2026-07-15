@@ -1,0 +1,30 @@
+<div class="gallery-container preview-section">
+  <div class="section-header reveal">
+    <span class="sub-label">Media</span>
+    <h1>Photo Gallery</h1>
+    <p class="section-desc">Breathtaking sunrises, lush forest trails, and ancient carvings captured at Sammed Shikharji.</p>
+  </div>
+
+  <!-- Masonry Grid -->
+  <div class="masonry-grid">
+    <div *ngFor="let photo of photos" class="masonry-item reveal-scale" (click)="openLightbox(photo)">
+      <img [src]="photo.url" [alt]="photo.title" loading="lazy" />
+      <div class="item-overlay">
+        <h3>{{ photo.title }}</h3>
+        <p>{{ photo.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Overlay -->
+  <div class="lightbox" *ngIf="selectedPhoto" (click)="closeLightbox()">
+    <button class="btn-close" (click)="closeLightbox()">×</button>
+    <div class="lightbox-content" (click)="$event.stopPropagation()">
+      <img [src]="selectedPhoto.url" [alt]="selectedPhoto.title" />
+      <div class="lightbox-caption">
+        <h2>{{ selectedPhoto.title }}</h2>
+        <p>{{ selectedPhoto.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>

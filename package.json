@@ -1,0 +1,27 @@
+{
+  "name": "parasnath-trekking",
+  "version": "1.0.0",
+  "description": "Fullstack application for Parasnath trekking",
+  "scripts": {
+    "install-frontend": "cd frontend && npm install",
+    "install-backend": "cd backend && npm install",
+    "build-frontend": "cd frontend && npm run build",
+    "start-backend": "cd backend && node server.js",
+    "dev": "concurrently \"cd frontend && npm start\" \"cd backend && npm run dev\"",
+    "install-all": "npm run install-frontend && npm run install-backend",
+    "build": "npm run build-frontend",
+    "start": "npm run start-backend",
+    "prod": "NODE_ENV=production npm run start",
+    "test": "cd frontend && npm test && cd ../backend && npm test"
+  },
+  "engines": {
+    "node": "18.x",
+    "npm": "9.x"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [],
+  "author": "Your Name",
+  "license": "ISC"
+}

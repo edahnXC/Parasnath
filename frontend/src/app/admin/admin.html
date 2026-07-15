@@ -1,0 +1,286 @@
+<div class="admin-container preview-section">
+  <div class="section-header reveal">
+    <span class="sub-label">Control Center</span>
+    <h1>Admin Panel</h1>
+    <p class="section-desc">Manage the shrines, trekking routes, and waypoint milestones published on the live site.</p>
+  </div>
+
+  <!-- Tab Selectors -->
+  <div class="admin-tabs-row reveal">
+    <div class="tabs-group">
+      <button [class.active]="activeTab === 'temples'" (click)="activeTab = 'temples'" class="tab-btn">Temples</button>
+      <button [class.active]="activeTab === 'routes'" (click)="activeTab = 'routes'" class="tab-btn">Trekking Routes</button>
+    </div>
+    
+    <button *ngIf="activeTab === 'temples'" (click)="openAddTemple()" class="btn">Add New Temple</button>
+    <button *ngIf="activeTab === 'routes'" (click)="openAddRoute()" class="btn">Add New Route</button>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Loading database records...</p>
+  </div>
+
+  <!-- TEMPLES TAB -->
+  <div class="tab-content card-glass reveal" *ngIf="!loading && activeTab === 'temples'">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Thumbnail</th>
+          <th>Name</th>
+          <th>Location</th>
+          <th>Best Time</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let temple of temples">
+          <td><img [src]="temple.mainImage" [alt]="temple.name" class="table-thumb" /></td>
+          <td><strong>{{ temple.name }}</strong></td>
+          <td>{{ temple.location }}</td>
+          <td>{{ temple.bestTimeToVisit }}</td>
+          <td class="action-cell">
+            <button (click)="openEditTemple(temple)" class="btn btn-secondary btn-sm">Edit</button>
+            <button (click)="deleteTemple(temple.id)" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="temples.length === 0">
+          <td colspan="5" class="empty-cell">No temples in SQLite database. Click "Add New Temple" to seed.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TREKKING ROUTES TAB -->
+  <div class="tab-content card-glass reveal" *ngIf="!loading && activeTab === 'routes'">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Thumbnail</th>
+          <th>Route Name</th>
+          <th>Starting Point</th>
+          <th>Distance</th>
+          <th>Difficulty</th>
+          <th>Waypoints</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let route of routes">
+          <td><img [src]="route.mainImage" [alt]="route.name" class="table-thumb" /></td>
+          <td><strong>{{ route.name }}</strong></td>
+          <td>{{ route.startingPoint }}</td>
+          <td>{{ route.distance }} km</td>
+          <td><span class="badge" [ngClass]="route.difficulty.toLowerCase()">{{ route.difficulty }}</span></td>
+          <td>{{ route.waypoints.length }} markers</td>
+          <td class="action-cell">
+            <button (click)="openEditRoute(route)" class="btn btn-secondary btn-sm">Edit</button>
+            <button (click)="deleteRoute(route.id)" class="btn btn-danger btn-sm">Delete</button>
+          </td>
+        </tr>
+        <tr *ngIf="routes.length === 0">
+          <td colspan="7" class="empty-cell">No trekking routes in SQLite database. Click "Add New Route" to seed.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ============================= -->
+  <!-- TEMPLE FORM MODAL             -->
+  <!-- ============================= -->
+  <div class="modal-overlay" *ngIf="showTempleModal">
+    <div class="modal-card card-glass">
+      <div class="modal-header">
+        <h2>{{ editingTempleId ? 'Edit Temple' : 'Add New Temple' }}</h2>
+        <button class="modal-close" (click)="showTempleModal = false">×</button>
+      </div>
+      
+      <form (ngSubmit)="saveTemple()" #templeF="ngForm" class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Temple Name*</label>
+            <input type="text" [(ngModel)]="templeForm.name" name="name" required class="form-input" placeholder="e.g. Parasnath Hill Temple" />
+          </div>
+
+          <div class="form-group">
+            <label>Location*</label>
+            <input type="text" [(ngModel)]="templeForm.location" name="location" required class="form-input" placeholder="e.g. Madhuban, Giridih" />
+          </div>
+
+          <div class="form-group">
+            <label>Short Description*</label>
+            <input type="text" [(ngModel)]="templeForm.shortDescription" name="shortDescription" required class="form-input" placeholder="Brief summary for cards" />
+          </div>
+
+          <div class="form-group">
+            <label>Best Time To Visit</label>
+            <input type="text" [(ngModel)]="templeForm.bestTimeToVisit" name="bestTimeToVisit" class="form-input" placeholder="e.g. Oct - Mar" />
+          </div>
+
+          <div class="form-group">
+            <label>Architecture style</label>
+            <input type="text" [(ngModel)]="templeForm.architecture" name="architecture" class="form-input" placeholder="e.g. Ancient Marble Shikhara" />
+          </div>
+
+          <div class="form-group">
+            <label>Visitor Facilities</label>
+            <input type="text" [(ngModel)]="templeForm.facilities" name="facilities" class="form-input" placeholder="e.g. Drinking water, resting sheds" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Full Narrative Description</label>
+          <textarea [(ngModel)]="templeForm.description" name="description" rows="3" class="form-input" placeholder="Detailed content..."></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Historical Legend</label>
+            <textarea [(ngModel)]="templeForm.history" name="history" rows="2" class="form-input"></textarea>
+          </div>
+          <div class="form-group">
+            <label>Spiritual Significance</label>
+            <textarea [(ngModel)]="templeForm.significance" name="significance" rows="2" class="form-input"></textarea>
+          </div>
+        </div>
+
+        <!-- Main Image Upload -->
+        <div class="form-group image-upload-group">
+          <label>Main Representative Image*</label>
+          <div class="upload-controls">
+            <input type="file" (change)="onImageSelected($event, 'temple-main')" accept="image/*" class="file-input" />
+            <span class="upload-tip">Uploading saves persistently to server uploads directory</span>
+          </div>
+          <div class="image-preview" *ngIf="templeForm.mainImage">
+            <img [src]="templeForm.mainImage" alt="Main Image Preview" />
+            <div class="url-text">{{ templeForm.mainImage }}</div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" (click)="showTempleModal = false" class="btn btn-secondary">Cancel</button>
+          <button type="submit" [disabled]="templeF.invalid" class="btn">Save Temple</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================= -->
+  <!-- ROUTE FORM MODAL              -->
+  <!-- ============================= -->
+  <div class="modal-overlay" *ngIf="showRouteModal">
+    <div class="modal-card card-glass route-modal">
+      <div class="modal-header">
+        <h2>{{ editingRouteId ? 'Edit Trekking Route' : 'Add New Trekking Route' }}</h2>
+        <button class="modal-close" (click)="showRouteModal = false">×</button>
+      </div>
+
+      <form (ngSubmit)="saveRoute()" #routeF="ngForm" class="modal-body">
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Route Name*</label>
+            <input type="text" [(ngModel)]="routeForm.name" name="name" required class="form-input" placeholder="e.g. Madhuban Paved Path" />
+          </div>
+
+          <div class="form-group">
+            <label>Difficulty*</label>
+            <select [(ngModel)]="routeForm.difficulty" name="difficulty" required class="form-input">
+              <option value="Easy">Easy</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Difficult">Difficult</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Distance (km)*</label>
+            <input type="number" step="0.1" [(ngModel)]="routeForm.distance" name="distance" required class="form-input" />
+          </div>
+
+          <div class="form-group">
+            <label>Est. Duration*</label>
+            <input type="text" [(ngModel)]="routeForm.duration" name="duration" required class="form-input" placeholder="e.g. 5-6 hours" />
+          </div>
+
+          <div class="form-group">
+            <label>Starting Point*</label>
+            <input type="text" [(ngModel)]="routeForm.startingPoint" name="startingPoint" required class="form-input" placeholder="e.g. Madhuban Camp" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Route Description</label>
+          <textarea [(ngModel)]="routeForm.description" name="description" rows="3" class="form-input"></textarea>
+        </div>
+
+        <!-- Image Upload -->
+        <div class="form-group image-upload-group">
+          <label>Route Main Banner Image*</label>
+          <div class="upload-controls">
+            <input type="file" (change)="onImageSelected($event, 'route-main')" accept="image/*" class="file-input" />
+          </div>
+          <div class="image-preview" *ngIf="routeForm.mainImage">
+            <img [src]="routeForm.mainImage" alt="Route Banner Preview" />
+            <div class="url-text">{{ routeForm.mainImage }}</div>
+          </div>
+        </div>
+
+        <!-- Nested Waypoints Builder -->
+        <div class="waypoints-builder-section">
+          <h3>Trail Milestones (Waypoints)</h3>
+          
+          <!-- Waypoints Table list -->
+          <div class="waypoints-list-table" *ngIf="routeForm.waypoints && routeForm.waypoints.length > 0">
+            <div *ngFor="let wp of routeForm.waypoints; let i = index" class="waypoint-row">
+              <div class="wp-header">
+                <strong>#{{ i+1 }} - {{ wp.name }}</strong>
+                <button type="button" (click)="removeWaypoint(i)" class="btn-remove">Remove</button>
+              </div>
+              <p>{{ wp.description }}</p>
+              <div class="wp-meta">Coords: {{ wp.latitude }}, {{ wp.longitude }} | Image: {{ wp.images[0] ? 'Yes' : 'No' }}</div>
+            </div>
+          </div>
+
+          <!-- Add Waypoint Sub-Form -->
+          <div class="add-waypoint-form card-glass">
+            <h4>Add Route Milestone</h4>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Milestone Name</label>
+                <input type="text" [(ngModel)]="newWaypoint.name" name="newWpName" class="form-input" placeholder="e.g. Gandharva Nala" />
+              </div>
+              <div class="form-group">
+                <label>Latitude</label>
+                <input type="number" step="0.00001" [(ngModel)]="newWaypoint.latitude" name="newWpLat" class="form-input" />
+              </div>
+              <div class="form-group">
+                <label>Longitude</label>
+                <input type="number" step="0.00001" [(ngModel)]="newWaypoint.longitude" name="newWpLng" class="form-input" />
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label>Milestone Description</label>
+              <input type="text" [(ngModel)]="newWaypoint.description" name="newWpDesc" class="form-input" placeholder="Brief info about this point..." />
+            </div>
+
+            <!-- Waypoint Image Upload -->
+            <div class="form-group">
+              <label>Milestone Photo</label>
+              <input type="file" (change)="onImageSelected($event, 'waypoint')" accept="image/*" class="file-input" />
+              <div class="image-preview tiny" *ngIf="newWaypoint.images && newWaypoint.images.length > 0">
+                <img [src]="newWaypoint.images[0]" alt="Milestone Preview" />
+              </div>
+            </div>
+
+            <button type="button" (click)="addWaypoint()" class="btn btn-secondary">Insert Milestone</button>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" (click)="showRouteModal = false" class="btn btn-secondary">Cancel</button>
+          <button type="submit" [disabled]="routeF.invalid" class="btn">Save Route</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

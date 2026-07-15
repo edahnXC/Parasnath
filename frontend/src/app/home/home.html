@@ -1,0 +1,110 @@
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="reveal">Shikharji<br/><span>The Peak of Salvation</span></h1>
+    <p class="reveal">Embark on a sacred journey to Parasnath Hill, the most revered pilgrimage site where Tirthankaras attained eternal liberation.</p>
+    <div class="hero-actions reveal">
+      <a routerLink="/trekking" class="btn">Explore Trekking Routes</a>
+      <a routerLink="/temples" class="btn btn-secondary">Sacred Temples</a>
+    </div>
+  </div>
+</section>
+
+<!-- Introduction Section -->
+<section class="intro-section preview-section">
+  <div class="intro-grid">
+    <div class="intro-text reveal-left">
+      <span class="sub-label">A sacred heritage</span>
+      <h2>The Unmatched Serenity of Parasnath</h2>
+      <p>Rising 1,350 meters above the plains of Jharkhand, Parasnath Hill (Sammed Shikharji) is a majestic sanctuary of spirituality and natural beauty. It is the sacred ground where 20 out of the 24 Jain Tirthankaras attained Nirvana, making it a place of supreme reverence.</p>
+      <p>Whether you seek the spiritual grace of ancient marble shrines or the adventurous climb through dense deciduous forests, Parasnath offers a journey that purifies the soul and expands the mind.</p>
+      <a routerLink="/contact" class="btn">Plan Your Visit</a>
+    </div>
+    <div class="intro-image-container reveal-right">
+      <div class="image-wrapper">
+        <img src="https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800" alt="Parasnath Mountain peak view" />
+        <div class="image-accent-border"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Temples Section -->
+<section class="temples-section preview-section">
+  <div class="section-header reveal">
+    <span class="sub-label">Sacred Shrines</span>
+    <h2>Explore Featured Shrines</h2>
+    <p class="section-desc">Each peak and slope of the hill houses shrines marking the exact location where Tirthankaras attained liberation.</p>
+  </div>
+
+  <div class="temples-grid">
+    <div *ngFor="let temple of featuredTemples" class="temple-card card-glass reveal-scale">
+      <div class="card-img-wrapper">
+        <img [src]="temple.mainImage" [alt]="temple.name" loading="lazy" />
+        <span class="tag-badge">{{ temple.bestTimeToVisit }}</span>
+      </div>
+      <div class="card-info">
+        <h3>{{ temple.name }}</h3>
+        <span class="location"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> {{ temple.location }}</span>
+        <p>{{ temple.shortDescription }}</p>
+        <a [routerLink]="['/temples']" [queryParams]="{id: temple.id}" class="card-link">Read History →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Featured Trekking Route Section -->
+<section class="trek-preview-section preview-section" *ngIf="featuredRoutes.length > 0">
+  <div class="trek-grid" *ngFor="let route of featuredRoutes">
+    <div class="trek-image-box reveal-left">
+      <img [src]="route.mainImage" [alt]="route.name" />
+      <div class="trek-overlay-gradient"></div>
+    </div>
+    <div class="trek-info-box card-glass reveal-right">
+      <span class="sub-label">The Trekking Route</span>
+      <h2>{{ route.name }}</h2>
+      <div class="meta-row">
+        <div class="meta-item">
+          <span class="label">Distance</span>
+          <span class="value">{{ route.distance }} km</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Duration</span>
+          <span class="value">{{ route.duration }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="label">Difficulty</span>
+          <span class="value badge" [ngClass]="route.difficulty.toLowerCase()">{{ route.difficulty }}</span>
+        </div>
+      </div>
+      <p>{{ route.description }}</p>
+      <div class="waypoints-preview">
+        <h4>Milestones</h4>
+        <ul>
+          <li *ngFor="let wp of route.waypoints.slice(0, 3)">{{ wp.name }}</li>
+          <li *ngIf="route.waypoints.length > 3">And {{ route.waypoints.length - 3 }} more...</li>
+        </ul>
+      </div>
+      <a routerLink="/trekking" class="btn">View Route Details</a>
+    </div>
+  </div>
+</section>
+
+<!-- Quick Explore Grid (Fauna & Gallery) -->
+<section class="explore-shortcuts preview-section">
+  <div class="shortcuts-grid">
+    <div class="shortcut-card card-glass reveal-scale">
+      <div class="icon-box">🌿</div>
+      <h3>Flora &amp; Fauna</h3>
+      <p>Parasnath is home to a rich collection of rare herbal flora, dense forests, and animal life. Discover the diverse ecosystem surrounding the holy mountain.</p>
+      <a routerLink="/flora-fauna" class="btn btn-secondary">Explore Wildlife</a>
+    </div>
+    <div class="shortcut-card card-glass reveal-scale">
+      <div class="icon-box">📸</div>
+      <h3>Photo Gallery</h3>
+      <p>View the breathtaking sunrises, ancient carvings, forest trails, and misty mountaintops captured by travelers and pilgrims.</p>
+      <a routerLink="/gallery" class="btn btn-secondary">Open Gallery</a>
+    </div>
+  </div>
+</section>

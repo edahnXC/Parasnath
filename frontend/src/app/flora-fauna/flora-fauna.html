@@ -1,0 +1,27 @@
+<div class="flora-fauna-container preview-section">
+  <div class="section-header reveal">
+    <span class="sub-label">Ecosystem</span>
+    <h1>Flora &amp; Fauna of Parasnath</h1>
+    <p class="section-desc">Explore the diverse, rich ecological sanctuary that carpets the sacred peaks of Shikharji.</p>
+  </div>
+
+  <div class="filter-controls reveal">
+    <button [class.btn-secondary]="selectedType !== 'all'" (click)="filterItems('all')" class="btn">All Species</button>
+    <button [class.btn-secondary]="selectedType !== 'flora'" (click)="filterItems('flora')" class="btn">Flora (Plants)</button>
+    <button [class.btn-secondary]="selectedType !== 'fauna'" (click)="filterItems('fauna')" class="btn">Fauna (Animals)</button>
+  </div>
+
+  <div class="eco-grid">
+    <div *ngFor="let item of filteredItems" class="eco-card card-glass reveal-scale">
+      <div class="card-img-wrapper">
+        <img [src]="item.imageUrl" [alt]="item.name" />
+        <span class="badge" [ngClass]="item.type">{{ item.type === 'flora' ? 'Plant' : 'Animal' }}</span>
+      </div>
+      <div class="card-text">
+        <h3>{{ item.name }}</h3>
+        <span class="scientific-name">{{ item.scientificName }}</span>
+        <p>{{ item.description }}</p>
+      </div>
+    </div>
+  </div>
+</div>

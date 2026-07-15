@@ -22,8 +22,8 @@
       <a routerLink="/contact" class="btn">Plan Your Visit</a>
     </div>
     <div class="intro-image-container reveal-right">
-      <div class="image-wrapper">
-        <img [src]="siteSettings['HomeIntroImage'] || 'https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=800'" alt="Parasnath Mountain peak view" />
+      <div class="image-wrapper" *ngIf="siteSettings['HomeIntroImage']">
+        <img [src]="siteSettings['HomeIntroImage']" alt="Parasnath Mountain peak view" />
         <div class="image-accent-border"></div>
       </div>
     </div>
@@ -41,7 +41,8 @@
   <div class="temples-grid">
     <div *ngFor="let temple of featuredTemples" class="temple-card card-glass reveal-scale">
       <div class="card-img-wrapper">
-        <img [src]="temple.mainImage" [alt]="temple.name" loading="lazy" />
+        <img *ngIf="temple.mainImage" [src]="temple.mainImage" [alt]="temple.name" loading="lazy" />
+        <div *ngIf="!temple.mainImage" class="img-placeholder"></div>
         <span class="tag-badge">{{ temple.bestTimeToVisit }}</span>
       </div>
       <div class="card-info">
@@ -58,7 +59,8 @@
 <section class="trek-preview-section preview-section" *ngIf="featuredRoutes.length > 0">
   <div class="trek-grid" *ngFor="let route of featuredRoutes">
     <div class="trek-image-box reveal-left">
-      <img [src]="route.mainImage" [alt]="route.name" />
+      <img *ngIf="route.mainImage" [src]="route.mainImage" [alt]="route.name" />
+      <div *ngIf="!route.mainImage" class="img-placeholder" style="width:100%; height:100%;"></div>
       <div class="trek-overlay-gradient"></div>
     </div>
     <div class="trek-info-box card-glass reveal-right">

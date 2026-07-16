@@ -13,11 +13,7 @@ namespace ParasnathAPI.Data
             // Auto-run migrations or ensure DB is created
             context.Database.EnsureCreated();
 
-            // Look for any temples.
-            if (context.Temples.Any())
-            {
-                return;   // DB has been seeded
-            }
+            // DB Seeders will individually check if data exists
 
             var temples = new List<Temple>
             {
@@ -75,8 +71,11 @@ namespace ParasnathAPI.Data
                 }
             };
 
-            context.Temples.AddRange(temples);
-            context.SaveChanges();
+            if (!context.Temples.Any())
+            {
+                context.Temples.AddRange(temples);
+                context.SaveChanges();
+            }
 
             var routes = new List<TrekkingRoute>
             {
@@ -127,46 +126,40 @@ namespace ParasnathAPI.Data
                 }
             };
 
-            context.TrekkingRoutes.AddRange(routes);
-            context.SaveChanges();
+            if (!context.TrekkingRoutes.Any())
+            {
+                context.TrekkingRoutes.AddRange(routes);
+                context.SaveChanges();
+            }
 
             // Seed Gallery Images
             if (!context.GalleryImages.Any())
             {
                 var photos = new List<GalleryImage>
                 {
-                    new GalleryImage { Url = "", Title = "Sunrise at the Summit", Description = "Misty golden sunrise rays hitting the peaks of the Tirthankara shrines." },
-                    new GalleryImage { Url = "", Title = "Mountain Slopes", Description = "Dense forests carpeting the hills on the climb from Madhuban." },
-                    new GalleryImage { Url = "", Title = "Shikharji Temple Domes", Description = "White marble domes reaching to the skies under the mountain fog." },
-                    new GalleryImage { Url = "", Title = "Tall Sal Forests", Description = "Sal trees lining the paved stone trail." },
-                    new GalleryImage { Url = "", Title = "Deciduous Vegetation", Description = "Close up of rare medicinal ferns growing on mountain slopes." },
-                    new GalleryImage { Url = "", Title = "Bhomia Baba Stone Carvings", Description = "Intricate patterns carved on the ancient stone blocks of the guardian temple." }
+                    new GalleryImage { Url = "/images/gallery1.jpg", Title = "Shikharji Sunrise", Description = "A beautiful sunrise view of the temples." },
+                    new GalleryImage { Url = "/images/gallery2.jpg", Title = "Temple Architecture", Description = "Intricate marble carvings." },
+                    new GalleryImage { Url = "/images/gallery3.jpg", Title = "Mountain View", Description = "Scenic view from the hills." },
+                    new GalleryImage { Url = "/images/gallery4.jpg", Title = "Peaceful Pathway", Description = "Trekking route view." },
+                    new GalleryImage { Url = "/images/gallery5.jpg", Title = "Sacred Shrine", Description = "One of the beautiful shrines." }
                 };
                 context.GalleryImages.AddRange(photos);
                 context.SaveChanges();
             }
 
-            // Seed Flora/Fauna (EcoItems)
-            if (!context.EcoItems.Any())
-            {
-                var ecoItems = new List<EcoItem>
-                {
-                    new EcoItem { Type = "flora", Name = "Sal Tree (Shorea robusta)", ScientificName = "Shorea robusta", Description = "The dominant tree species covering the slopes of Parasnath Hill. Its wood is highly valued for durability, and the forest canopy provides shelter to various bird species.", ImageUrl = "" },
-                    new EcoItem { Type = "flora", Name = "Medicinal Herbs", ScientificName = "Various Species", Description = "The hill is renowned for its diverse collection of rare Ayurvedic herbs. Scholars and botanists visit to study wild species used in traditional medicines.", ImageUrl = "" },
-                    new EcoItem { Type = "fauna", Name = "Wild Boar (Sus scrofa)", ScientificName = "Sus scrofa", Description = "Commonly found roaming in the dense forest layers of the slopes. They play a key role in the forest ecosystem by turning up the soil during feeding.", ImageUrl = "" },
-                    new EcoItem { Type = "fauna", Name = "Deciduous Birds", ScientificName = "Avifauna", Description = "Parasnath is a paradise for birdwatchers, featuring rare species of drongos, hornbills, and thrushes nesting in the tall Sal branches.", ImageUrl = "" }
-                };
-                context.EcoItems.AddRange(ecoItems);
-                context.SaveChanges();
-            }
+            // Flora and fauna temporarily removed as per user request
+            // if (!context.EcoItems.Any())
+            // {
+            //     // Seed EcoItems
+            // }
 
             // Seed Site Settings
             if (!context.SiteSettings.Any())
             {
                 var settings = new List<SiteSetting>
                 {
-                    new SiteSetting { Key = "HomeHeroImage", Value = "" },
-                    new SiteSetting { Key = "HomeIntroImage", Value = "" }
+                    new SiteSetting { Key = "HomeHeroImage", Value = "/images/gallery1.jpg" },
+                    new SiteSetting { Key = "HomeIntroImage", Value = "/images/gallery2.jpg" }
                 };
                 context.SiteSettings.AddRange(settings);
                 context.SaveChanges();

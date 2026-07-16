@@ -86,6 +86,13 @@ export class Admin implements OnInit {
     this.refreshData();
   }
 
+  switchTab(tab: 'temples' | 'routes' | 'gallery' | 'eco' | 'settings') {
+    this.activeTab = tab;
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('data-loaded'));
+    }, 50);
+  }
+
   refreshData() {
     this.loading = true;
     forkJoin({

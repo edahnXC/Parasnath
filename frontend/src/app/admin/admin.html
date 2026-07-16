@@ -13,11 +13,11 @@
   <!-- Tab Selectors -->
   <div class="admin-tabs-row reveal">
     <div class="tabs-group">
-      <button [class.active]="activeTab === 'temples'" (click)="activeTab = 'temples'" class="tab-btn">Temples</button>
-      <button [class.active]="activeTab === 'routes'" (click)="activeTab = 'routes'" class="tab-btn">Trekking Routes</button>
-      <button [class.active]="activeTab === 'gallery'" (click)="activeTab = 'gallery'" class="tab-btn">Gallery</button>
-      <button [class.active]="activeTab === 'eco'" (click)="activeTab = 'eco'" class="tab-btn">Flora & Fauna</button>
-      <button [class.active]="activeTab === 'settings'" (click)="activeTab = 'settings'" class="tab-btn">Settings</button>
+      <button [class.active]="activeTab === 'temples'" (click)="switchTab('temples')" class="tab-btn">Temples</button>
+      <button [class.active]="activeTab === 'routes'" (click)="switchTab('routes')" class="tab-btn">Trekking Routes</button>
+      <button [class.active]="activeTab === 'gallery'" (click)="switchTab('gallery')" class="tab-btn">Gallery</button>
+      <button [class.active]="activeTab === 'eco'" (click)="switchTab('eco')" class="tab-btn">Flora & Fauna</button>
+      <button [class.active]="activeTab === 'settings'" (click)="switchTab('settings')" class="tab-btn">Settings</button>
     </div>
     
     <button *ngIf="activeTab === 'temples'" (click)="openAddTemple()" class="btn">Add New Temple</button>

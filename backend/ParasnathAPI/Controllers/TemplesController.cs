@@ -23,10 +23,7 @@ namespace ParasnathAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Temple>>> GetTemples()
         {
-            var connStr = _context.Database.GetConnectionString();
-            var builder = new Npgsql.NpgsqlConnectionStringBuilder(connStr);
-            throw new Exception($"DEBUG INFO: Host='{builder.Host}', Port='{builder.Port}', Database='{builder.Database}', Username='{builder.Username}'");
-            // return await _context.Temples.ToListAsync();
+            return await _context.Temples.ToListAsync();
         }
 
         // GET: api/temples/5

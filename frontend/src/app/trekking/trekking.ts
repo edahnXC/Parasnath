@@ -157,6 +157,13 @@ export class Trekking implements OnInit, OnDestroy {
         this.map.fitBounds(bounds, { padding: [30, 30] });
       }
 
+      // Ensure the map resizes correctly if the container was hidden or flex layout changed
+      setTimeout(() => {
+        if (this.map) {
+          this.map.invalidateSize();
+        }
+      }, 100);
+
     } catch (err) {
       console.error('Error initializing Leaflet map:', err);
       this.mapError = 'Failed to construct map layout.';

@@ -137,7 +137,7 @@ namespace ParasnathAPI.Data
             {
                 var photos = new List<GalleryImage>
                 {
-                    new GalleryImage { Url = "/images/gallery1.jpg", Title = "Shikharji Sunrise", Description = "A beautiful sunrise view of the temples." },
+                    new GalleryImage { Url = "/images/parasnath-hill.jpg", Title = "Parasnath Peak", Description = "A breathtaking view of the Parasnath Hills." },
                     new GalleryImage { Url = "/images/gallery2.jpg", Title = "Temple Architecture", Description = "Intricate marble carvings." },
                     new GalleryImage { Url = "/images/gallery3.jpg", Title = "Mountain View", Description = "Scenic view from the hills." },
                     new GalleryImage { Url = "/images/gallery4.jpg", Title = "Peaceful Pathway", Description = "Trekking route view." },
@@ -147,19 +147,34 @@ namespace ParasnathAPI.Data
                 context.SaveChanges();
             }
 
-            // Flora and fauna temporarily removed as per user request
-            // if (!context.EcoItems.Any())
-            // {
-            //     // Seed EcoItems
-            // }
+            if (!context.EcoItems.Any())
+            {
+                var ecoItems = new List<EcoItem>
+                {
+                    // Fauna
+                    new EcoItem { Name = "Sloth Bear", Category = "Fauna", Description = "A myrmecophagous bear species native to the Indian subcontinent, commonly found in the mixed deciduous forests of Parasnath Wildlife Sanctuary.", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Sloth_Bear_in_Yala_National_Park.jpg/800px-Sloth_Bear_in_Yala_National_Park.jpg" },
+                    new EcoItem { Name = "Barking Deer", Category = "Fauna", Description = "Also known as the Indian Muntjac, this small deer is known for its distinctive bark-like call and is frequently spotted in the dense undergrowth of the hills.", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Indian_Muntjac_in_Nagarhole.jpg/800px-Indian_Muntjac_in_Nagarhole.jpg" },
+                    new EcoItem { Name = "Wild Boar", Category = "Fauna", Description = "A robust and adaptable species that plays a key ecological role in the forests of Parasnath by turning over soil while foraging.", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Wild_Boar_H%C3%BClser_Berg_02.jpg/800px-Wild_Boar_H%C3%BClser_Berg_02.jpg" },
+                    new EcoItem { Name = "Langur", Category = "Fauna", Description = "Gray langurs are highly social primates that inhabit the forested slopes of Parasnath, often seen swinging through the canopy or resting near temples.", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Gray_langur_%28Semnopithecus_entellus%29.jpg/800px-Gray_langur_%28Semnopithecus_entellus%29.jpg" },
+                    new EcoItem { Name = "Macaque", Category = "Fauna", Description = "Rhesus macaques are common around the pilgrimage trails, intelligent and curious monkeys that are familiar with human presence.", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Rhesus_macaque_%28Macaca_mulatta%29_2.jpg/800px-Rhesus_macaque_%28Macaca_mulatta%29_2.jpg" },
+                    
+                    // Flora
+                    new EcoItem { Name = "Sal (Shorea robusta)", Category = "Flora", Description = "A dominant tree species in the Parasnath Wildlife Sanctuary, providing dense canopy cover and crucial habitat for numerous wildlife species.", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Shorea_robusta_tree.jpg/800px-Shorea_robusta_tree.jpg" },
+                    new EcoItem { Name = "Bamboo", Category = "Flora", Description = "Extensive bamboo groves are found throughout the sanctuary, serving as an important food source and shelter for animals.", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Bamboo_forest_Arashiyama.jpg/800px-Bamboo_forest_Arashiyama.jpg" },
+                    new EcoItem { Name = "Teak (Tectona grandis)", Category = "Flora", Description = "A valuable deciduous timber tree that thrives in the mixed forests of the region, known for its large leaves and durable wood.", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Tectona_grandis_-_Khao_Yai.jpg/800px-Tectona_grandis_-_Khao_Yai.jpg" },
+                    new EcoItem { Name = "Kalmegh (Andrographis paniculata)", Category = "Flora", Description = "An important ethnomedicinal herb found in the local forests, traditionally used by local tribes for its medicinal properties.", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Andrographis_paniculata.jpg/800px-Andrographis_paniculata.jpg" }
+                };
+                context.EcoItems.AddRange(ecoItems);
+                context.SaveChanges();
+            }
 
             // Seed Site Settings
             if (!context.SiteSettings.Any())
             {
                 var settings = new List<SiteSetting>
                 {
-                    new SiteSetting { Key = "HomeHeroImage", Value = "/images/gallery1.jpg" },
-                    new SiteSetting { Key = "HomeIntroImage", Value = "/images/gallery2.jpg" }
+                    new SiteSetting { Key = "HomeHeroImage", Value = "/images/parasnath-hill.jpg" },
+                    new SiteSetting { Key = "HomeIntroImage", Value = "/images/parasnath-hill.jpg" }
                 };
                 context.SiteSettings.AddRange(settings);
                 context.SaveChanges();

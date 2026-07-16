@@ -12,8 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 // Configure DB Context with PostgreSQL
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (!string.IsNullOrEmpty(connectionString))
+{
+    // Fix ADO.NET connection strings that use 'Data Source' instead of 'Host' (common in Neon/Azure)
+    connectionString = connectionString.Replace("Data Source=", "Host=", StringComparison.OrdinalIgnoreCase);
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
 // Configure JWT Authentication
 var jwtSecret = builder.Configuration["AuthSettings:JwtSecret"];

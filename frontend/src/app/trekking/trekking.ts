@@ -1,7 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef, Inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { TrekkingService, TrekkingRoute, Waypoint } from '../services/trekking.service';
-import { ConfigService } from '../services/config.service';
 
 @Component({
   selector: 'app-trekking',
@@ -22,10 +21,11 @@ export class Trekking implements OnInit, OnDestroy {
   private map: any = null;
   private markers: any[] = [];
   private polyline: any = null;
+  private L: any = null;
 
   constructor(
     private trekkingService: TrekkingService,
-    private configService: ConfigService
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit() {
@@ -36,7 +36,6 @@ export class Trekking implements OnInit, OnDestroy {
           this.selectedRoute = data[0];
           this.selectedWaypoint = data[0].waypoints[0] ?? null;
           
-          // Allow DOM to settle before loading map scripts
           setTimeout(() => this.loadMapScript(), 150);
         }
         this.loading = false;
@@ -61,7 +60,7 @@ export class Trekking implements OnInit, OnDestroy {
   selectRoute(route: TrekkingRoute) {
     this.selectedRoute = route;
     this.selectedWaypoint = route.waypoints[0] ?? null;
-    setTimeout(() => this.initGoogleMap(), 50);
+    setTimeout(() => this.initLeafletMap(), 50);
     setTimeout(() => {
       window.dispatchEvent(new CustomEvent('data-loaded'));
     }, 50);
@@ -69,106 +68,84 @@ export class Trekking implements OnInit, OnDestroy {
 
   selectWaypoint(wp: Waypoint) {
     this.selectedWaypoint = wp;
-    if (this.map && (window as any).google) {
-      this.map.panTo({ lat: wp.latitude, lng: wp.longitude });
-      this.map.setZoom(15);
+    if (this.map) {
+      this.map.flyTo([wp.latitude, wp.longitude], 15);
     }
   }
 
-  private loadMapScript() {
-    if ((window as any).google && (window as any).google.maps) {
-      this.initGoogleMap();
-      return;
+  private async loadMapScript() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    try {
+      this.L = await import('leaflet');
+
+      // Fix default Leaflet icon paths
+      const iconRetinaUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png';
+      const iconUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png';
+      const shadowUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png';
+      
+      const iconDefault = this.L.icon({
+        iconRetinaUrl,
+        iconUrl,
+        shadowUrl,
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+      });
+      this.L.Marker.prototype.options.icon = iconDefault;
+
+      this.initLeafletMap();
+    } catch (err) {
+      console.error('Failed to load Leaflet:', err);
+      this.mapError = 'Failed to load Map library.';
     }
-
-    const apiKey = this.configService.getGoogleMapsApiKey();
-    if (!apiKey) {
-      this.mapError = 'Google Maps API key is missing. Key must be configured on the backend environment variables.';
-      return;
-    }
-
-    const scriptId = 'google-maps-script';
-    if (document.getElementById(scriptId)) return;
-
-    const script = document.createElement('script');
-    script.id = scriptId;
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=geometry`;
-    script.async = true;
-    script.defer = true;
-    script.onload = () => this.initGoogleMap();
-    script.onerror = () => {
-      this.mapError = 'Failed to load Google Maps script. Please verify internet access and API key configuration.';
-    };
-    document.head.appendChild(script);
   }
 
-  private initGoogleMap() {
-    if (!this.selectedRoute || !this.selectedRoute.waypoints.length || !this.mapContainer) return;
+  private initLeafletMap() {
+    if (!this.selectedRoute || !this.selectedRoute.waypoints.length || !this.mapContainer || !this.L) return;
     
-    const google = (window as any).google;
-    if (!google || !google.maps) {
-      this.mapError = 'Google Maps library could not be loaded.';
-      return;
-    }
-
     try {
       this.clearMapObjects();
       this.mapError = null;
 
       const firstWp = this.selectedRoute.waypoints[0];
-      const mapOptions = {
-        center: { lat: firstWp.latitude, lng: firstWp.longitude },
-        zoom: 13,
-        mapTypeId: 'terrain',
-        styles: [
-          {
-            featureType: 'poi',
-            elementType: 'labels',
-            stylers: [{ visibility: 'off' }]
-          }
-        ]
-      };
 
-      this.map = new google.maps.Map(this.mapContainer.nativeElement, mapOptions);
-
-      // Create polyline path coordinates
-      const pathCoordinates = this.selectedRoute.waypoints.map(wp => ({
-        lat: wp.latitude,
-        lng: wp.longitude
-      }));
-
-      this.polyline = new google.maps.Polyline({
-        path: pathCoordinates,
-        geodesic: true,
-        strokeColor: '#0d9488',
-        strokeOpacity: 0.9,
-        strokeWeight: 4,
-        map: this.map
+      this.map = this.L.map(this.mapContainer.nativeElement, {
+        center: [firstWp.latitude, firstWp.longitude],
+        zoom: 13
       });
 
-      const bounds = new google.maps.LatLngBounds();
+      this.L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(this.map);
+
+      // Create polyline path coordinates
+      const pathCoordinates = this.selectedRoute.waypoints.map(wp => [wp.latitude, wp.longitude]);
+
+      this.polyline = this.L.polyline(pathCoordinates, {
+        color: '#0d9488',
+        weight: 4,
+        opacity: 0.9
+      }).addTo(this.map);
+
+      const bounds = this.L.latLngBounds();
       
       this.selectedRoute.waypoints.forEach((wp, index) => {
-        const position = { lat: wp.latitude, lng: wp.longitude };
+        const position = [wp.latitude, wp.longitude];
         bounds.extend(position);
 
-        const marker = new google.maps.Marker({
-          position: position,
-          map: this.map,
-          title: wp.name,
-          label: (index + 1).toString(),
-          animation: google.maps.Animation.DROP
-        });
-
-        const infoWindow = new google.maps.InfoWindow({
-          content: `<div style="color:#1f2937;font-family:sans-serif;padding:4px;max-width:180px;">
-                      <h4 style="margin:0 0 4px 0;font-size:13px;font-weight:700;">${wp.name}</h4>
-                      <p style="margin:0;font-size:11px;line-height:1.4;color:#4b5563;">${wp.description}</p>
-                    </div>`
-        });
-
-        marker.addListener('click', () => {
-          infoWindow.open(this.map, marker);
+        const marker = this.L.marker(position, { title: wp.name }).addTo(this.map);
+        
+        const popupContent = `<div style="color:#1f2937;font-family:sans-serif;padding:4px;max-width:180px;">
+                                <h4 style="margin:0 0 4px 0;font-size:13px;font-weight:700;">${index + 1}. ${wp.name}</h4>
+                                <p style="margin:0;font-size:11px;line-height:1.4;color:#4b5563;">${wp.description}</p>
+                              </div>`;
+        
+        marker.bindPopup(popupContent);
+        
+        marker.on('click', () => {
           this.selectWaypoint(wp);
         });
 
@@ -176,22 +153,21 @@ export class Trekking implements OnInit, OnDestroy {
       });
 
       if (this.selectedRoute.waypoints.length > 1) {
-        this.map.fitBounds(bounds);
+        this.map.fitBounds(bounds, { padding: [30, 30] });
       }
 
     } catch (err) {
-      console.error('Error initializing google maps:', err);
+      console.error('Error initializing Leaflet map:', err);
       this.mapError = 'Failed to construct map layout.';
     }
   }
 
   private clearMapObjects() {
-    this.markers.forEach(m => m.setMap(null));
-    this.markers = [];
-    if (this.polyline) {
-      this.polyline.setMap(null);
-      this.polyline = null;
+    if (this.map) {
+      this.map.remove();
+      this.map = null;
     }
-    this.map = null;
+    this.markers = [];
+    this.polyline = null;
   }
 }

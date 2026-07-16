@@ -17,10 +17,12 @@ var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
 
 if (!string.IsNullOrEmpty(connectionString))
 {
-    if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) || 
-        connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
+    connectionString = connectionString.Trim();
+    
+    var uriMatch = System.Text.RegularExpressions.Regex.Match(connectionString, @"postgres(ql)?://[^;\s]+");
+    if (uriMatch.Success)
     {
-        var uri = new Uri(connectionString);
+        var uri = new Uri(uriMatch.Value);
         var userInfo = uri.UserInfo.Split(':');
         var username = userInfo[0];
         var password = userInfo.Length > 1 ? userInfo[1] : "";

@@ -15,8 +15,16 @@ builder.Services.AddControllers();
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (!string.IsNullOrEmpty(connectionString))
 {
-    // Fix ADO.NET connection strings that use 'Data Source' instead of 'Host' (common in Neon/Azure)
-    connectionString = connectionString.Replace("Data Source=", "Host=", StringComparison.OrdinalIgnoreCase);
+    // Clean up accidentally malformed strings (like "Data Source=postgres://...")
+    var uriMatch = System.Text.RegularExpressions.Regex.Match(connectionString, @"postgres(ql)?://[^;]+");
+    if (uriMatch.Success)
+    {
+        connectionString = uriMatch.Value;
+    }
+    else
+    {
+        connectionString = connectionString.Replace("Data Source=", "Host=", StringComparison.OrdinalIgnoreCase);
+    }
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

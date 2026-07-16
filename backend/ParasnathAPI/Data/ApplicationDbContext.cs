@@ -17,6 +17,7 @@ namespace ParasnathAPI.Data
         public DbSet<GalleryImage> GalleryImages => Set<GalleryImage>();
         public DbSet<EcoItem> EcoItems => Set<EcoItem>();
         public DbSet<SiteSetting> SiteSettings => Set<SiteSetting>();
+        public DbSet<ContactMessage> ContactMessages => Set<ContactMessage>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

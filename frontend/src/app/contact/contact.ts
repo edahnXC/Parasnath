@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-contact',
@@ -18,6 +20,8 @@ export class Contact implements OnInit {
   submitted = false;
   success = false;
 
+  constructor(private http: HttpClient) {}
+
   ngOnInit() {
     setTimeout(() => {
       window.dispatchEvent(new CustomEvent('data-loaded'));
@@ -28,14 +32,27 @@ export class Contact implements OnInit {
     if (!this.name || !this.email || !this.message) return;
     this.submitted = true;
     
-    // Simulate API form submission
-    setTimeout(() => {
-      this.success = true;
-      this.submitted = false;
-      this.name = '';
-      this.email = '';
-      this.subject = '';
-      this.message = '';
-    }, 1200);
+    const payload = {
+      name: this.name,
+      email: this.email,
+      subject: this.subject,
+      message: this.message
+    };
+
+    this.http.post(`${environment.apiUrl}/api/contact`, payload).subscribe({
+      next: () => {
+        this.success = true;
+        this.submitted = false;
+        this.name = '';
+        this.email = '';
+        this.subject = '';
+        this.message = '';
+      },
+      error: (err) => {
+        console.error('Contact form submission failed', err);
+        this.submitted = false;
+        // Should ideally show an error message on the UI
+      }
+    });
   }
 }

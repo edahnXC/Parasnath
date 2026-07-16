@@ -77,7 +77,8 @@ export class Trekking implements OnInit, OnDestroy {
     if (!isPlatformBrowser(this.platformId)) return;
 
     try {
-      this.L = await import('leaflet');
+      const leaflet = await import('leaflet');
+      this.L = leaflet.default ? leaflet.default : leaflet;
 
       // Fix default Leaflet icon paths
       const iconRetinaUrl = 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png';

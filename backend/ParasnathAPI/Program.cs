@@ -17,15 +17,26 @@ var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
 
 if (!string.IsNullOrEmpty(connectionString))
 {
-    // Clean up accidentally malformed strings (like "Data Source=postgres://...")
-    var uriMatch = System.Text.RegularExpressions.Regex.Match(connectionString, @"postgres(ql)?://[^;]+");
-    if (uriMatch.Success)
+    if (connectionString.StartsWith("postgres://", StringComparison.OrdinalIgnoreCase) || 
+        connectionString.StartsWith("postgresql://", StringComparison.OrdinalIgnoreCase))
     {
-        connectionString = uriMatch.Value;
+        var uri = new Uri(connectionString);
+        var userInfo = uri.UserInfo.Split(':');
+        var username = userInfo[0];
+        var password = userInfo.Length > 1 ? userInfo[1] : "";
+        var host = uri.Host;
+        var port = uri.Port > 0 ? uri.Port : 5432;
+        var database = uri.AbsolutePath.Trim('/');
+        
+        connectionString = $"Host={host};Port={port};Database={database};Username={username};Password={password};SslMode=Require;Trust Server Certificate=true;";
     }
     else
     {
         connectionString = connectionString.Replace("Data Source=", "Host=", StringComparison.OrdinalIgnoreCase);
+        if (!connectionString.Contains("SslMode", StringComparison.OrdinalIgnoreCase))
+        {
+            connectionString = connectionString.TrimEnd(';') + ";SslMode=Require;Trust Server Certificate=true;";
+        }
     }
 }
 
